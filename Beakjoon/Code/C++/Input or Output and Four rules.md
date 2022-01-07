@@ -91,7 +91,7 @@ int main()
   {
     cin >> a >> b;
     
-    if(a < 1000 && b < 1000 && b != 0)
+    if(a < 1000 && b < 1000 && b != 0) // a,b 1000이하 수로 고정
       break;
     else
       continue;
