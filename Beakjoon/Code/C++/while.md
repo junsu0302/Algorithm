@@ -28,22 +28,23 @@ using namespace std;
 
 int main()
 {
-	int n, n1, n2, n3;
-	int count = 1; 
-	cin >> n;
-	int num =n;
+  int n, n1, n2, n3;
+  int count = 1; 
+  cin >> n;
+  int num =n;
 
-	while(1)
+  while(1)
   {
-		n1 = n/10; 
-		n2 = n%10;
-		n3 = n1 + n2;
-		n = n2*10 + n3%10;
-		if(num == n)
-			break;
+    n1 = n/10; 
+    n2 = n%10;
+    n3 = n1 + n2;
+    n = n2*10 + n3%10;
+    
+    if(num == n)
+      break;
     else
-			count++;
-	}
-	cout << count << "\n";
+      count++;
+    }
+  cout << count << "\n";
 }
 ```
