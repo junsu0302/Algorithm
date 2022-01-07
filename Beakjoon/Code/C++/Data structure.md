@@ -69,28 +69,28 @@ int main()
 
     while (n--) 
     {
-        string cmd;
-        cin >> cmd;
+        string input;
+        cin >> input;
         
-        if (cmd == "push") 
+        if (input == "push") 
         {
             int num;
             cin >> num;
             s.push(num);
         } 
-        else if (cmd == "top") 
+        else if (input == "top") 
         {
             cout << (s.empty() ? -1 : s.top()) << '\n';
         } 
-        else if (cmd == "size") 
+        else if (input == "size") 
         {
             cout << s.size << '\n';
         }
-        else if (cmd == "empty") 
+        else if (input == "empty") 
         {
             cout << s.empty() << '\n';
         }
-        else if (cmd == "pop") 
+        else if (input == "pop") 
         {
             cout << (s.empty() ? -1 : s.top()) << '\n';
             if (!s.empty()) 
