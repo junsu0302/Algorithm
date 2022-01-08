@@ -156,20 +156,127 @@ int main()
 
 ## 상수
 ```C++
+#include <iostream>
+#include <string>
+using namespace std;
 
+int main() 
+{
+	string a, b;
+	cin >> a >> b;
+
+	string s;
+
+	for (int i = 2; i >= 0; i--) 
+  {
+		if (a[i] > b[i]) 
+    {
+			s = a; 
+      break;
+		}
+		else if (a[i] < b[i]) 
+    {
+			s = b; 
+      break;
+		}
+	}
+	cout << s[2] << s[1] << s[0];
+}
 ```
 
 ## 다이얼
 ```C++
+#include <iostream>
+#include <string>
 
+using namespace std;
+
+int main() 
+{
+	string s;
+	cin >> s;
+	int n = 0;
+
+	for (int i = 0; i < s.length(); i++) 
+  {
+		if (s.at(i) >= 'A' && s.at(i) <= 'C')
+			n += 3;
+		else if (s.at(i) >= 'D' && s.at(i) <= 'F')
+			n += 4;
+		else if (s.at(i) >= 'G' && s.at(i) <= 'I')
+			n += 5;
+		else if (s.at(i) >= 'J' && s.at(i) <= 'L')
+			n += 6;
+		else if (s.at(i) >= 'M' && s.at(i) <= 'O')
+			n += 7;
+		else if (s.at(i) >= 'P' && s.at(i) <= 'S')
+			n += 8;
+		else if (s.at(i) >= 'T' && s.at(i) <= 'V')
+			n += 9;
+		else if (s.at(i) >= 'W' && s.at(i) <= 'Z')
+			n += 10;
+	}
+  cout << n;
+}
 ```
 
 ## 크로아티아 알파벳
 ```C++
+#include <iostream>
+#include <string>
+#include <vector>
+using namespace std;
 
+int main() 
+{
+  vector<string> v = {"c=","c-","dz=","d-","lj","nj","s=","z="};
+  int idx;
+  string s;
+  cin >> s;
+
+  for(int i = 0; i < v.size(); i++)
+  {
+    while(1)
+    {
+      if(s.find(v[i]) == string::npos)
+        break;
+      s.replace(s.find(v[i]), v[i].length(), "a");
+    }
+  }
+  cout << s.length();
+}
 ```
 
 ## 그룹 단어 체커
 ```C++
+#include <iostream>
+using namespace std;
 
+int main()
+{	
+	int n;
+	int count = 0;
+	string s;
+	cin >> n;
+
+	for(int i=0; i<n; i++)
+  {
+		cin >> s;
+		bool check = true;
+		
+		for(int j=0; j<s.length(); j++)
+    {
+			for(int k=0; k<j; k++)
+      {
+				if(s[j] != s[j-1] && s[j] == s[k])
+        {
+					check = false;
+					break;			
+				}				
+			}
+		}
+		if(check) count++;
+	}
+	cout << count;
+}
 ```
