@@ -153,17 +153,99 @@ int main()
 
 ## 정수 삼각형
 ```C++
+#include <algorithm>
+#include <iostream>
+using namespace std;
 
+int arr[501];
+int ans[501];
+int N, num;
+
+int main()
+{
+  cin >> N;
+  for (int i=1; i<=N; i++)
+  {
+    if (i == 1)
+    {
+      cin >> ans[1];
+      arr[1] = ans[1];
+      continue;
+    }
+    else
+    {
+      for (int j=1; j<=i; j++)
+      {
+        cin >> num;
+
+        if (j == 1)  arr[j] = num + ans[1];
+        else if (j == i)  arr[j] = num + ans[j-1];
+        else  arr[j] = num + max(ans[j-1], ans[j]);
+      }
+
+      for(int k=1; k<=i; k++)
+        ans[k] = arr[k];
+    }
+  }
+
+  sort(ans+1, ans+1+N, greater<int>());
+
+  cout << ans[1];
+}
 ```
 
 ## 계단 오르기
 ```C++
+#include <iostream> 
+using namespace std; 
 
+int N; 
+int stairs[301]; 
+int result[301]; 
+
+int main() 
+{ 
+  cin >> N; 
+  for(int i=0; i<N; i++) 
+    cin >> stairs[i]; 
+    
+  result[0] = stairs[0]; 
+  result[1] = max(stairs[1], stairs[0]+stairs[1]); 
+  result[2] = max(stairs[0] + stairs[2], stairs[1]+stairs[2]); 
+  
+  for(int i=3; i<N; i++) 
+    result[i] = max(stairs[i] + result[i-2], stairs[i]+stairs[i-1]+result[i-3]); 
+    
+  cout << result[N-1]; 
+}
 ```
 
 ## 1로 만들기
 ```C++
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
 
+int main() 
+{
+  ios::sync_with_stdio(false);
+  cin.tie(NULL);
+  cout.tie(NULL);
+
+	int N;
+	cin >> N ;
+	vector<int> arr(N+1);
+
+	arr[1] = 0;
+	for (int i=2; i<=N; i++) 
+  {
+		arr[i] = arr[i - 1] + 1;
+		if (!(i % 3)) arr[i] = min(arr[i], arr[i/3] + 1);
+		if (!(i % 2)) arr[i] = min(arr[i], arr[i/2] + 1);
+	}
+	cout << arr[N] << "\n";
+}
 ```
 
 ## 쉬운 계단 수
