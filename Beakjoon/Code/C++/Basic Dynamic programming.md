@@ -250,7 +250,36 @@ int main()
 
 ## 쉬운 계단 수
 ```C++
+#include <iostream>
+#include <vector>
+using namespace std;
 
+int n, result = 0;
+int arr[101][10] = {0};
+int main()
+{
+  cin >> n;
+
+  for (int i=1; i<10; i++)
+    arr[1][i] = 1;
+
+  for (int i=2; i<=n; i++) 
+  {
+    for (int j=0; j<10; j++) 
+    {
+      if (j == 0)  arr[i][0] = arr[i-1][j+1];
+      else if (j == 9)  arr[i][9] = arr[i-1][j-1];
+      else  arr[i][j] = arr[i-1][j-1] + arr[i-1][j+1];
+
+      arr[i][j] %= 1000000000;
+    }
+  }
+
+  for (int i = 0; i < 10; i++) 
+    result = (result + arr[n][i]) % 1000000000;
+
+    cout << result << "\n";
+}
 ```
 
 ## 포도주 시식
