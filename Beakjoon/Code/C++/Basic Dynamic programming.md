@@ -284,7 +284,31 @@ int main()
 
 ## 포도주 시식
 ```C++
+#include<iostream>
+using namespace std;
 
+int podo[10001];
+int result[10001]; 
+
+int main() 
+{
+	int n;
+	cin >> n; 
+	for (int i=1; i<=n; i++) 
+		cin >> podo[i]; 
+
+	result[1] = podo[1];
+	result[2] = podo[1] + podo[2];
+	for (int i = 3; i <= n; i++) 
+  {
+		result[i] = result[i-1];
+		if (result[i] < result[i-2] + podo[i])
+			result[i] = result[i-2] + podo[i];
+		if (result[i] < result[i-3] + podo[i-1] + podo[i])
+			result[i] = result[i-3] + podo[i-1] + podo[i];
+	}
+	cout << result[n] << '\n';
+}
 ```
 
 ## 가장 긴 증가하는 부분 수열
