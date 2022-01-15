@@ -13,32 +13,32 @@ vector<int> v(10);
 
 int cmp(int a, int b) 
 {
-	return a > b;
+  return a > b;
 }
 
 void setting()
 {
   cin >> n >> k;
-	for(int i=0; i<n; i++) 
-		cin >> v[i];
+  for(int i=0; i<n; i++) 
+    cin >> v[i];
 }
 
 void run()
 {
   sort(v.begin(), v.end(), cmp);
-	for (int i = 0; i < n; i++) 
+  for (int i = 0; i < n; i++) 
   {
-		while (k - v[i] >= 0) 
+    while (k - v[i] >= 0) 
     {
-			result++;
-			k -= v[i];
-		}
-	}
+      result++;
+      k -= v[i];
+    }
+  }
 }
 
 int main() 
 {	
-	setting();
+  setting();
   run();
   cout << result << '\n';
 }
@@ -189,29 +189,29 @@ long long ans;
 
 void setting()
 {
-	cin >> n;
-	for (int i = 0; i < n - 1; i++)
-		cin >> input[i].first;
-	for (int i = 0; i < n; i++)
-		cin >> input[i].second;
+  cin >> n;
+  for (int i = 0; i < n - 1; i++)
+    cin >> input[i].first;
+  for (int i = 0; i < n; i++)
+    cin >> input[i].second;
 }
 
 void run()
 {
-	int i = 0;
-	ans = input[i].first * input[i].second;
-	for (int j=1; j<n; j++) 
+  int i = 0;
+  ans = input[i].first * input[i].second;
+  for (int j=1; j<n; j++) 
   {
-		if (input[i].second > input[j].second)
-			i = j;
-		ans += input[j].first * input[i].second;
-	}
+    if (input[i].second > input[j].second)
+      i = j;
+    ans += input[j].first * input[i].second;
+  }
 }
 
 int main() 
 {
   setting();
   run();
-	cout << ans;
+  cout << ans;
 }
 ```
