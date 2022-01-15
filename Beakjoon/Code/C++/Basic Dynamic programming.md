@@ -343,22 +343,170 @@ int main()
 }
 ```
 
+## 가장 긴 바이토닉 부분 수열
+```C++
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int N;
+int result = 1;
+int arr[1001];
+int upcount[1001];
+int downcount[1001];
+
+int main()
+{
+  cin >> N;
+  for (int i=1; i<=N; i++) 
+    cin >> arr[i];
+
+  for (int i=1; i<=N; i++) 
+  {
+    upcount[i] = 1;
+    for (int j=0; j<i; j++) 
+    {
+      if (arr[i] > arr[j] && upcount[i] < upcount[j]+1)
+        upcount[i] = upcount[j] + 1;
+    }
+  }
+
+  for (int i = N; i >= 1; i--) 
+  {
+    downcount[i] = 1;
+    for (int j=N; j>i; j--) 
+    {
+      if (arr[i] > arr[j] && downcount[i] < downcount[j]+1)
+        downcount[i] = downcount[j] + 1;
+    }
+  }
+
+  for (int i = 1; i <= N; i++) 
+    result= max(result, upcount[i] + downcount[i]-1);
+
+  cout << result;
+}
+```
+
 ## 전깃줄
 ```C++
+#include <iostream>
+#include <utility>
+#include <algorithm>
+using namespace std;
 
+int dp[1010];
+int arr[101];
+
+int main() 
+{
+	pair<int, int>pole[101];
+	int n; 
+  cin >> n;
+
+	for(int i=0; i<n; i++)
+		cin >> pole[i].first >> pole[i].second;
+  
+	sort(pole, pole + n);
+	int result = -1;
+
+	for (int i = 0; i < n; i++) 
+  {
+		dp[i] = 1;
+		for (int j = 0; j < i; j++)
+			if (pole[j].second < pole[i].second)
+				dp[i] = max(dp[i], dp[j] + 1);
+		
+    result = max(result, dp[i]);
+	}
+	cout << n - result;
+}
 ```
 
 ## LCS
 ```C++
+#include <iostream>
+#include <algorithm>
+using namespace std;
 
+int dp[1001][1001];
+
+int main() 
+{
+	string a, b;
+  cin >> a >> b;
+	
+  for(int i=1; i<=b.size(); i++)
+  {
+    for(int j=1; j<=a.size(); j++) 
+    {
+      if (b[i-1] == a[j-1])
+        dp[i][j] = dp[i-1][j-1] + 1;
+      else
+        dp[i][j] = max(dp[i-1][j], dp[i][j-1]);
+    }
+  }
+	cout << dp[b.size()][a.size()]<<'\n';
+}
 ```
 
 ## 연속합
 ```C++
+#include<iostream>
+using namespace std;
 
+int a[100000];
+int d[100000];
+
+int main() 
+{
+	int N, result;
+	cin >> N;
+	for(int i=0; i<N; i++) 
+		cin >> a[i];
+
+	result = a[0];
+	for(int i=0; i<N; i++) 
+  {
+		d[i] = a[i];
+		if(i == 0) continue;
+		if(d[i] < d[i-1] + a[i])
+			d[i] = d[i-1] + a[i];
+		if(d[i] > result) 
+      result = d[i]; 
+	}
+	cout << result;
+}
 ```
 
 ## 평범한 배낭
 ```C++
+#include<iostream>
+#include<algorithm>
+using namespace std;
 
+int N, K;
+int DP[101][100001];
+int Weight[101];
+int Value[101];
+
+int main()
+{
+	cin >> N >> K;
+
+	for (int i=1; i<=N; i++)
+		cin >> Weight[i] >> Value[i];
+
+	for (int i=1; i<=N; i++)
+	{
+		for (int j=1; j<=K; j++)
+		{ 
+			if (j - Weight[i] >= 0) 
+        DP[i][j] = max(DP[i-1][j], DP[i-1][j - Weight[i]] + Value[i]);
+			else 
+        DP[i][j] = DP[i-1][j];
+		}
+	}
+	cout << DP[N][K];
+}
 ```
