@@ -306,6 +306,9 @@ int arr[1000001];
 
 void setting()
 {
+  ios::sync_with_stdio(false);
+  cin.tie(NULL);
+  cout.tie(NULL);
 	cin >> N;
 	for (int i=0; i<N; i++)
 		cin >> arr[i];
@@ -333,6 +336,8 @@ int main()
   run();
 	for (int i=0; i<N; i++)
 		cout << ans[i] << " ";
+}
+
 }
 
 ```
