@@ -58,7 +58,71 @@ int main()
 
 ## 퀴드트리
 ```C++
+#include <iostream>
+#include <string>
+using namespace std;
 
+int N;
+string S;
+int arr[64][64];
+
+void setting()
+{
+  ios::sync_with_stdio(false);
+  cin.tie(NULL);
+  cout.tie(NULL);
+  
+  cin >> N;
+
+  for (int i = 0; i < N; i++)
+  {
+    cin >> S;
+ 
+    for (int j = 0; j < N; j++)
+      arr[i][j] = S[j] - '0';
+  }
+}
+
+void run(int n, int y, int x)
+{
+  if (n == 1)
+  {
+    cout << arr[y][x];
+    return;
+  }
+
+  bool zero = true, one = true;
+  
+  for (int i = y; i < y + n; i++)
+  {
+    for (int j = x; j < x + n; j++)
+    {
+      if (arr[i][j])
+        zero = false;
+      else
+        one = false;
+    }
+  }
+  if (zero)
+    cout << 0;
+  else if(one)
+    cout << 1;
+  else
+  {
+    cout << "(";
+    run(n / 2, y, x);
+    run(n / 2, y, x + n / 2); 
+    run(n / 2, y + n / 2, x); 
+    run(n / 2, y + n / 2, x + n / 2); 
+    cout << ")";
+  }
+}
+
+int main()
+{
+  setting();
+  run(N, 0, 0);
+}
 ```
 
 ## 종이의 개수
