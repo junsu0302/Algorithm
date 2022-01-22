@@ -186,7 +186,38 @@ int main()
 
 ## 곱셈
 ```C++
+#include <iostream>
+using namespace std;
 
+int A, B, C;
+
+void setting()
+{
+  ios::sync_with_stdio(false);
+  cin.tie(NULL);
+  cout.tie(NULL);  
+  cin >> A >> B >> C;
+}
+
+long long run(int A, int B, int C)
+{
+  if (B == 1) 
+    return A;
+  else
+  {
+    long long num = run(A, B / 2, C);
+    if (B % 2)
+      return ((num*num) % C * A) % C;
+    else
+      return (num*num) % C;
+  }
+}
+
+int main()
+{
+  setting();
+  cout << run(A % C, B, C) << "\n";
+}
 ```
 
 ## 이항 계수
