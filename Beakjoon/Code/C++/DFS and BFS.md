@@ -453,14 +453,72 @@ int main()
 }
 ```
 
-## 토마토
-```C++
-
-```
-
 ## 숨바꼭질
 ```C++
+#include <iostream>
+#include <queue>
+using namespace std;
+ 
+int N, K;
+bool visited[100001];
+int path[100001];
+queue<int> q;
+ 
+void BFS(int a) 
+{
+  path[a] = 0;
+  visited[a] = true;
+  q.push(a);
+ 
+  while (!q.empty()) 
+  {
+    int s = q.front();
+    if (s == K) break;
+    q.pop();
+ 
+    if (visited[s + 1] == 0 && s + 1 >= 0 && s + 1 < 100001) 
+    {
+      visited[s + 1] = true;
+      q.push(s + 1);
+      path[s + 1] = path[s] + 1;
+    }
+    if (visited[s - 1] == 0 && s - 1 >= 0 && s - 1 < 100001) 
+    {
+      visited[s - 1] = true;
+      q.push(s - 1);
+      path[s - 1] = path[s] + 1;
+    }
+    if (visited[s * 2] == 0 && s * 2 >= 0 && s * 2 < 100001) 
+    {
+      visited[s * 2] = true;
+      q.push(s * 2);
+      path[s * 2] = path[s] + 1;
+    }
+  }
+}
 
+void setting()
+{
+  ios::sync_with_stdio(false);
+  cin.tie(NULL);
+  cout.tie(NULL);
+
+  cin >> N >> K;
+}
+
+void print()
+{
+  cout << path[K];
+}
+
+int main() 
+{
+  setting();
+
+  BFS(N);
+ 
+  print();
+}
 ```
 
 ## 벽 부수고 이동하기
