@@ -523,6 +523,88 @@ int main()
 
 ## 벽 부수고 이동하기
 ```C++
+#include<iostream>
+#include<string>
+#include<queue>
+using namespace std;
+ 
+int N, M;
+int MAP[1000][1000];
+bool Visit[1000][1000][2];
+queue<pair<pair<int, int>, pair<int,int>>> Q;
+ 
+int X_Move[] = { 0, 0, 1, -1 };
+int Y_Move[] = { 1, -1, 0, 0 };
+ 
+
+ 
+int BFS()
+{
+  Q.push(make_pair(make_pair(0, 0), make_pair(0, 1)));
+  Visit[0][0][0] = true;
+ 
+  while (Q.empty() == 0)
+  {
+    int x = Q.front().first.first;
+    int y = Q.front().first.second;
+    int B = Q.front().second.first;
+    int cnt = Q.front().second.second;
+    Q.pop();
+ 
+    if (x == N - 1 && y == M - 1)  return cnt;
+    for (int i = 0; i < 4; i++)
+    {
+      int X_Arrival  = x + X_Move[i];
+      int Y_Arrival  = y + Y_Move[i];
+ 
+      if (X_Arrival  >= 0 && Y_Arrival >= 0 && X_Arrival  < N && Y_Arrival < M)
+      {
+        if (MAP[X_Arrival ][Y_Arrival] == 1 && B == 0)
+        {
+          Visit[X_Arrival ][Y_Arrival][B+1] = true;
+          Q.push(make_pair(make_pair(X_Arrival , Y_Arrival), make_pair(B + 1, cnt + 1)));
+        }
+        else if (MAP[X_Arrival ][Y_Arrival] == 0 && Visit[X_Arrival ][Y_Arrival][B] == false)
+        {
+          Visit[X_Arrival ][Y_Arrival][B] = true;
+          Q.push(make_pair(make_pair(X_Arrival , Y_Arrival), make_pair(B, cnt + 1)));
+        }
+      }
+    }
+  }
+  return -1;
+}
+
+void setting()
+{
+  ios::sync_with_stdio(false);
+  cin.tie(NULL);
+  cout.tie(NULL);
+  cin >> N >> M;
+  
+  for (int i = 0; i < N; i++)
+  {
+    string Number;
+    cin >> Number;
+    for (int j = 0; j < M; j++)
+    {
+      int tmp = Number[j] - '0';
+      MAP[i][j] = tmp;
+    }
+  }
+}
+
+void print()
+{
+  cout << BFS();
+}
+
+int main()
+{
+  setting();
+  print();
+}
+
 
 ```
 
