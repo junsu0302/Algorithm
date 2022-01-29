@@ -610,7 +610,89 @@ int main()
 
 ## 나이트의 이동
 ```C++
+#include <iostream>
+#include <queue>
+using namespace std;
+ 
+int T, L;
+int a, b, c, d;
+int map[300][300];
+bool visited[300][300];
+int path[300][300];
+int Move_x[] = {1,2,-1,-2,1,2,-1,-2};
+int Move_y[] = {2,1,2,1,-2,-1,-2,-1};
+queue<pair<int, int>> q;
+ 
+void reset() 
+{
+  for (int i = 0; i < L; i++) 
+  {
+    for (int j = 0; j < L; j++) 
+    {
+      map[i][j] = 0;
+      visited[i][j] = 0;
+      path[i][j] = 0;
+    }
+  }
+  while (!q.empty()) 
+    q.pop();
+}
 
+void BFS(int x, int y) 
+{
+  visited[x][y] = true;
+  q.push(make_pair(x, y));
+ 
+  while (!q.empty()) 
+  {
+    int x = q.front().first;
+    int y = q.front().second;
+    q.pop();
+ 
+    if (x == c && y == d) break;
+ 
+    for (int i = 0; i < 8; i++) 
+    {
+      int Arrivla_y = y + Move_y[i];
+      int Arrivla_x = x + Move_x[i];
+ 
+      if (Arrivla_x < 0 || Arrivla_y < 0 || Arrivla_x >= L || Arrivla_y >= L)
+        continue;
+      if (visited[Arrivla_x][Arrivla_y] == 0) 
+      {
+        visited[Arrivla_x][Arrivla_y] = true;
+        q.push(make_pair(Arrivla_x, Arrivla_y));
+        path[Arrivla_x][Arrivla_y] = path[x][y] + 1;
+      }
+    }
+  }
+}
+ 
+void setting()
+{
+  ios::sync_with_stdio(false);
+  cin.tie(NULL);
+  cout.tie(NULL); 
+  cin >> T;  
+}
+
+void run()
+{
+  while (T--) 
+  {
+    reset();
+    cin >> L;
+    cin >> a >> b >> c >> d;
+    BFS(a, b);
+    cout << path[c][d] << "\n";
+    }
+}
+
+int main() 
+{
+  setting();
+  run();
+}
 ```
 
 ## 이분 그래프
