@@ -270,17 +270,304 @@ int main()
 
 ## 경찰차
 ```C++
+#include <iostream>
+#include <utility>
+#include <vector>
+#include <algorithm>
 
+using namespace std;
+
+int N, W;
+vector<pair<int,int>> p;
+int store[1010][1010];
+int police_store[1010][1010];
+
+int calculate_distance(int police, int target, int start)
+{
+  int police_x,police_y,target_x,target_y;
+  if(start == 1)
+  {
+    police_x = 1;
+    police_y = 1;
+  }
+  else if(start == 2)
+  {
+    police_x = N;
+    police_y = N;
+  }
+  else
+  {
+    police_x = p[police-1].first;
+    police_y = p[police-1].second;
+  }
+  target_x = p[target-1].first;
+  target_y = p[target-1].second;
+  return abs(police_x-target_x) + abs(police_y-target_y);
+}
+
+int moving_distance(int police1, int police2)
+{
+  if(police1 == W || police2 == W)
+    return 0;
+
+  int tmp1, tmp2, move;
+
+  move = max(police1, police2) + 1;
+  if(store[police1][police2] != -1)
+    return store[police1][police2];
+
+  if(police1 == 0)
+    tmp1 = moving_distance(move,police2) + calculate_distance(police1, move, 1);
+  else
+    tmp1 = moving_distance(move,police2) + calculate_distance(police1, move, 0);
+
+  if(police2 == 0)
+    tmp2 = moving_distance(police1,move) + calculate_distance(police2, move, 2);
+  else
+    tmp2 = moving_distance(police1,move) + calculate_distance(police2, move, 0);
+
+  store[police1][police2] = min(tmp1,tmp2);
+
+  if(tmp1 < tmp2)
+    police_store[police1][police2] = 1;
+  else
+    police_store[police1][police2] = 2;
+    
+  return min(tmp1,tmp2);
+}
+
+void setting()
+{
+  ios::sync_with_stdio(false);
+  cin.tie(NULL);
+  cout.tie(NULL);
+
+  int tmp1,tmp2;
+  cin >> N;
+  cin >> W;
+
+  for(int i=0; i<W; i++)
+  {
+    cin >> tmp1;
+    cin >> tmp2;
+    p.push_back(make_pair(tmp1,tmp2));
+  }
+
+  for(int i=0; i<1010; i++)
+  {
+    for(int j=0; j<1010; j++)
+    {
+      store[i][j] = -1;
+      police_store[i][j] = -1;
+    }
+  }
+}
+
+void running()
+{
+  cout << moving_distance(0,0) << "\n";
+
+  int x = 0;
+  int y = 0;
+    
+  for(int i=0; i<W; i++)
+  {
+    cout << police_store[x][y] << "\n";
+    if(police_store[x][y] == 1)
+      x = i+1;
+    else
+      y = i+1;
+  }
+}
+
+int main()
+{
+  setting();
+  running();
+}
 ```
 
 ## 숨바꼭질 4
 ```C++
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#include<queue>
+ 
+using namespace std;
+ 
+int N, K;
+bool visited[200001];
+int path[200001];
+queue<pair<int, int> > qu;
+void setting()
+{
+  ios::sync_with_stdio(false);
+  cin.tie(NULL);
+  cout.tie(NULL);
 
+  cin >> N >> K;
+}
+
+void running() 
+{
+  qu.push({ N,0 });
+ 
+  while (!qu.empty()) 
+  {
+    pair<int, int> find = qu.front();
+    qu.pop();
+ 
+    if (find.first == K) 
+    {
+      cout << find.second << "\n";
+      vector<int> ans;
+      int count = find.second;
+      int next = K;
+      ans.push_back(K);
+      while (count--) 
+      {
+        ans.push_back(path[next]);
+        next = path[next];
+      }
+      reverse(ans.begin(), ans.end());
+ 
+      for (int i = 0; i < ans.size(); i++)
+        cout << ans[i] << " ";
+      return;
+    }
+        
+    if (find.first * 2 <= K * 2 && !visited[find.first * 2]) 
+    {
+      qu.push({ find.first * 2, find.second + 1 });
+      visited[find.first * 2] = true;
+      path[find.first * 2] = find.first;
+    }
+        
+    if (find.first + 1 <= K && !visited[find.first + 1]) 
+    {
+      qu.push({ find.first + 1, find.second + 1 });
+      visited[find.first + 1] = true;
+      path[find.first + 1] = find.first;
+    }
+ 
+    if (find.first > 0 && !visited[find.first - 1]) 
+    {
+      qu.push({ find.first - 1, find.second + 1 });
+      visited[find.first - 1] = true;
+      path[find.first - 1] = find.first;
+    }
+  }
+}
+ 
+int main() 
+{
+  setting();
+  running();
+}
 ```
 
 ## DSLR
 ```C++
+#include <iostream>
+#include <cstring>
+#include <string>
+#include <algorithm>
+#include <queue>
+using namespace std;
+ 
+int T, A, B;
+bool c[10001];
+ 
+int cmd_d(int n) 
+{
+    if (n * 2 > 9999) return (2 * n) % 10000;
+    else return (2 * n);
+}
+int cmd_s(int n) 
+{
+    if (n == 0) return 9999;
+    else return n - 1;
+}
+int cmd_L(int n) 
+{
+    int first = n / 1000;
+    int temp = (n % 1000) * 10;
+    return temp + first;
+}
+int cmd_R(int n) 
+{
+    int last = (n % 10);
+    int temp = (n / 10);
+    return (last * 1000) + temp;
+}
 
+void setting()
+{
+  ios::sync_with_stdio(false);
+  cin.tie(NULL);
+  cout.tie(NULL);
+
+  cin >> T;  
+}
+
+void running()
+{
+  while (T--) 
+  {
+    cin >> A >> B;
+    queue<pair<int, string> >q;
+    memset(c, false, sizeof(c));
+ 
+    q.push(make_pair(A, ""));
+    while (!q.empty()) 
+    {
+      int num = q.front().first;
+      string k = q.front().second;
+            
+      if (num == B) 
+      {
+        cout << k << "\n";
+        break;
+      }
+      
+      q.pop();
+      int x = cmd_d(num);
+      if (c[x] == false) 
+      {
+        c[x] = true;
+        q.push(make_pair(x, k + "D"));
+      }
+      
+      x = cmd_s(num);
+      if (c[x] == false) 
+      {
+        c[x] = true;
+        q.push(make_pair(x, k + "S"));
+      }
+      
+      x = cmd_L(num);
+      if (c[x] == false) 
+      {
+        c[x] = true;
+        q.push(make_pair(x, k + "L"));
+      }
+      
+      x = cmd_R(num);
+      if (c[x] == false) 
+      {
+        c[x] = true;
+        q.push(make_pair(x, k + "R"));
+      }
+    }
+  }
+}
+
+int main()
+{
+  setting();
+  running();
+}
 ```
 
 ## 최소비용 구하기 2
