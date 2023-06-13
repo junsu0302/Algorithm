@@ -140,9 +140,31 @@ for line in sys.stdin:
 `2447`
 ```python
 """
+구조적 재귀
+"""
+def star(n):
+    if n == 1:
+        return pattern
+    else:
+        tmp = star(n-1)
+        return [i*3 for i in tmp] + [i + " "*(3**(n-1)) + i for i in tmp] + [i*3 for i in tmp]
+
+
+pattern = [
+    "***",
+    "* *",
+    "***"
+]
+
+N = int(input())
+k = 0
+while N > 1:
+    N = N//3
+    k += 1
+
+"""
 수학적 재귀
 """
-
 import sys
 input = sys.stdin.readline
 
@@ -165,33 +187,10 @@ def star(n):
 N = int(input())
 result = star(N)
 print("\n".join(result))
-
-"""
-구조적 재귀
-"""
-def star(n):
-    if n == 1:
-        return pattern
-    else:
-        tmp = star(n-1)
-        return [i*3 for i in tmp] + [i + " "*(3**(n-1)) + i for i in tmp] + [i*3 for i in tmp]
-
-
-pattern = [
-    "***",
-    "* *",
-    "***"
-]
-
-N = int(input())
-k = 0
-while N > 1:
-    N = N//3
-    k += 1
 ```
 
 # 7. 하노이 탑 이동 순서
-``
+`Silver 1` `11729`
 ```python
 import sys
 input = sys.stdin.readline
