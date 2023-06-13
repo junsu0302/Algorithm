@@ -1,5 +1,5 @@
 # 1. 팩토리얼 2
-`27433`
+`Bronze 5` `27433`
 ```python
 import sys
 import math
@@ -11,7 +11,7 @@ print(math.factorial(N))
 ```
 
 # 2. 피보나치 수 5
-`10870`
+`Bronze 2` `10870`
 ```python
 import sys
 input = sys.stdin.readline
@@ -26,7 +26,7 @@ print(fibonacci[n])
 ```
 
 # 3. 재귀의 귀재
-`25501`
+`Bronze 2` `25501`
 ```python
 import sys
 input = sys.stdin.readline
@@ -50,7 +50,7 @@ for _ in range(T):
 ```
 
 # 4, 알고리즘 수업 - 병합 정렬 1
-`24060`
+`Silver 4` `24060`
 ```python
 def merge_sort(A, p, r):
 	if(p < r and cnt<= K):
@@ -100,34 +100,49 @@ print(result)
 ```
 
 # 5. 칸토어 집합
-`4779`
+`Silver 3` `4779`
 ```python
+"""
+함수
+"""
 import sys
-input = sys.stdin.readline
 
-def cantor(N):
-	result = ["-"]
+def cantor(n):
+    if n == 0:
+        return "-"
+    result = cantor(n-1)
+    space = " " * 3 ** (n-1)
+    result = result + space + result
 
-	if N == 0:
-		return result
-	else:
-		for i in range(N):
-			space = [" " for _ in range(len(result))]
-			result = result + space + result
-		return result
+    return result
 
-while True:
-	try:
-		N = int(input())
-		result = cantor(N)
-		print(*result, sep="")
-	except ValueError:
-		break
+if __name__ == "__main__":
+    for line in sys.stdin:
+        n = int(line)
+        result = cantor(n)
+        print(result)
+
+"""
+for 문
+"""
+import sys
+
+for line in sys.stdin:
+  result = "-"
+  for i in range(int(line)):
+    result = result + " " * len(result) + result
+
+  print(result)
+
 ```
 
 # 6. 별 찍기 - 10
 `2447`
 ```python
+"""
+수학적 재귀
+"""
+
 import sys
 input = sys.stdin.readline
 
@@ -150,6 +165,29 @@ def star(n):
 N = int(input())
 result = star(N)
 print("\n".join(result))
+
+"""
+구조적 재귀
+"""
+def star(n):
+    if n == 1:
+        return pattern
+    else:
+        tmp = star(n-1)
+        return [i*3 for i in tmp] + [i + " "*(3**(n-1)) + i for i in tmp] + [i*3 for i in tmp]
+
+
+pattern = [
+    "***",
+    "* *",
+    "***"
+]
+
+N = int(input())
+k = 0
+while N > 1:
+    N = N//3
+    k += 1
 ```
 
 # 7. 하노이 탑 이동 순서
