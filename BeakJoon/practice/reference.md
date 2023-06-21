@@ -1,5 +1,3 @@
-a
-
 # 하노이
 ```python
 import sys
