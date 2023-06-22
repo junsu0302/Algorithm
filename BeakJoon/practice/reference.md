@@ -49,3 +49,5 @@ if __name__ == "__main__":
   result = check(T)
   print(result)
 ```
+
+# 압축
