@@ -54,3 +54,33 @@ if __name__ == "__main__":
 ```python
 
 ```
+
+# Moo 게임
+```python
+import sys
+input = sys.stdin.readline
+
+def make_Moo(n, depth, before_len):
+  next_len = 2 * before_len + depth + 3
+
+  if n <= 3:
+    print(moo[n-1])
+    return
+
+  if next_len < n:
+    make_Moo(n, depth+1, next_len)
+  else:
+    if before_len < n and n <= before_len + depth + 3:
+      if n - before_len != 1:
+        print('o')
+      else:
+        print('m')
+      return
+    else:
+      make_Moo(n-(before_len + depth + 3), 1, 3)
+     
+if __name__ == "__main__":
+  N = int(input())
+  moo = ['m', 'o', 'o']
+  make_Moo(N, 1, 3)
+```
