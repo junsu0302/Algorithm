@@ -52,7 +52,31 @@ if __name__ == "__main__":
 
 # 압축
 ```python
+from collections import deque
+import sys
+input = sys.stdin.readline
 
+def decompression():
+  stack = deque()
+  cnt=0
+  before=''
+  
+  for c in input_data:
+    if c == '(':
+      stack.append([cnt-1,before])
+      cnt = 0
+    elif c == ')':
+      info = stack.pop()
+      cnt = cnt*info[1]+info[0]
+    else:
+      cnt += 1
+      before = int(c)
+  return cnt
+
+if __name__ == "__main__":
+  input_data = input().strip()
+  result = decompression()
+  print(result)
 ```
 
 # Moo 게임
