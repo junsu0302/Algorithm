@@ -84,3 +84,88 @@ if __name__ == "__main__":
   moo = ['m', 'o', 'o']
   make_Moo(N, 1, 3)
 ```
+
+# 홀수 홀릭 호석
+```python
+import sys
+input = sys.stdin.readline
+
+def count_odd(n):
+  cnt = 0
+  for i in n:
+    if int(i) & 1:
+      cnt += 1
+  return cnt
+
+
+def dividied(n, cnt):
+  global max_Value, min_Value
+  s = str(n)
+  cnt += count_odd(s)
+
+  if len(s) == 1:
+    min_Value = min(min_Value, cnt)
+    max_Value = max(max_Value, cnt)
+    return
+  elif len(s) == 2:
+    dividied(n // 10 + n % 10, cnt)
+  else:
+    for i in range(1, len(s) - 1):
+      for j in range(i + 1, len(s)):
+        new_num = int(s[:i]) + int(s[i: j]) + int(s[j:])
+        dividied(new_num, cnt)
+
+if __name__ == "__main__":
+  n = int(input())
+  min_Value = float('inf')
+  max_Value = 0
+
+  dividied(n, 0)
+
+  print(min_Value, max_Value)
+```
+
+# 별 찍기 - 18
+```python
+import sys
+input = sys.stdin.readline
+
+def make_Star(x, y, n):
+  if n == 1:
+    board[y][x] = '*'
+    return
+    
+  new_x = pow(2, n+1) - 3
+  new_y = pow(2, n) - 1
+    
+  if n % 2:
+    for i in range(new_x):
+      board[y][x+i] = '*'    
+    for i in range(new_y):
+      board[y-i][x+i] = '*'
+      board[y-i][x+new_x-i-1] = '*'
+            
+    make_Star(x+(pow(2, n-1)), y-(pow(2,n-1)-1), n-1)        
+  else:
+    for i in range(new_x):
+      board[y][x+i] = '*'
+    for i in range(new_y):
+      board[y+i][x+i] = '*'
+      board[y+i][x+new_x-i-1]= '*'
+
+    make_Star(x+(pow(2, n-1)), y+(pow(2,n-1)-1), n-1)   
+        
+if __name__ == "__main__":
+  N = int(input())
+  x = pow(2, N+1) - 3
+  y = pow(2, N) - 1
+  board = [[' ' for _ in range(x)] for _ in range(y)]
+    
+  if N % 2:
+    make_Star(0, y-1, N)
+  else:
+    make_Star(0, 0, N)
+        
+  for s in board:
+    print(''.join(s).rstrip())
+```
