@@ -1,4 +1,4 @@
-# 하노이
+# 하노이 탑
 ```python
 import sys
 input = sys.stdin.readline
