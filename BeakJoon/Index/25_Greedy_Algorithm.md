@@ -14,29 +14,109 @@
 # 동전 0
 `11047` `Sliver 4`
 ```python
+import sys
+input = sys.stdin.readline
 
+N, K = map(int, input().rstrip().split())
+
+coins = [0]*N
+for i in range(N):
+  coins[i] = int(input())
+
+count = 0
+for idx in reversed(coins):
+  if K == 0:
+    break
+  count += K // idx
+  K = K % idx
+
+print(count)
 ```
 
 # 회의실 배정
 `1931` `Sliver 1`
 ```python
+import sys
+input = sys.stdin.readline
 
+N = int(input())
+
+meeting = [None] * N
+for i in range(N):
+    start, end = map(int, input().rstrip().split())
+    meeting[i] = [start, end]
+
+meeting.sort(key=lambda x: (x[1], x[0]))  # 종료 시간을 기준으로 정렬
+
+last_Time = 0
+count = 0
+for start, end in meeting:
+    if start >= last_Time:
+        count += 1
+        last_Time = end
+
+print(count)
 ```
 
 # ATM
 `11399` `Sliver 4`
 ```python
+import sys
+input = sys.stdin.readline
 
+N = int(input())
+waiting_Time = list(map(int, input().rstrip().split()))
+waiting_Time.sort()
+
+result = 0
+for i in range(N):
+  result += waiting_Time[i] * (N-i)
+
+print(result)
 ```
 
 # 잃어버린 괄호
 `1541` `Sliver 2`
 ```python
+import sys
+input = sys.stdin.readline
 
+input_Data = input().rstrip().split('-')
+
+numbers = [] 
+
+for idx in input_Data:
+  sum = 0
+  tmp = idx.split('+')
+  for index in tmp:
+    sum += int(index)
+  numbers.append(sum)
+
+result = numbers[0] 
+
+for i in range(1,len(numbers)):
+  result -= numbers[i]
+print(result)
 ```
 
 # 주유소
 `13305` `Sliver 3`
 ```python
+import sys
+input = sys.stdin.readline
 
+N = int(input())
+load = list(map(int, input().rstrip().split()))
+city = list(map(int, input().rstrip().split()))
+
+result = 0
+min_cost = 1000000001
+for i in range(N-1):
+  if min_cost > city[i]:
+    min_cost = city[i]
+    result += city[i] * load[i]
+  else:
+    result += min_cost * load[i]
+
+print(result)
 ```
