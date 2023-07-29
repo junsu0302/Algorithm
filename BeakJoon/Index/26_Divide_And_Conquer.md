@@ -15,7 +15,37 @@
 # 색종이 만들기
 `2630` `Silver 2`
 ```python
+import sys
+input = sys.stdin.readline
 
+def Divied(n, x, y):
+  global blue_Count, white_Count
+
+  base = paper[y][x]
+
+  for row in range(y, y+n):
+    for col in range(x, x+n):
+      if base != paper[row][col]:
+        Divied(n//2, x, y)
+        Divied(n//2, x, y+n//2)
+        Divied(n//2, x+n//2, y)
+        Divied(n//2, x+n//2, y+n//2)
+        return
+
+  if base == 0:
+    white_Count += 1
+  else:
+    blue_Count += 1
+
+if __name__ == '__main__':
+  N = int(input())
+  paper = [list(map(int, input().rstrip().split())) for _ in range(N)]
+  blue_Count = 0
+  white_Count = 0
+  
+  Divied(N, 0, 0)
+  print(white_Count)
+  print(blue_Count)
 ```
 
 # 퀴드트리
