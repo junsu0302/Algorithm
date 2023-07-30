@@ -51,7 +51,36 @@ if __name__ == '__main__':
 # 퀴드트리
 `1992` `Silver 1`
 ```python
+import sys
+input = sys.stdin.readline
 
+def Divied(n, col, row):
+  global result
+  referencePoint = video[row][col]
+
+  for r in range(row, row+n):
+    for c in range(col, col+n):
+      if referencePoint != video[r][c]:
+        result.append('(')
+        Divied(n//2, col, row)
+        Divied(n//2, col+n//2, row)
+        Divied(n//2, col, row+n//2)
+        Divied(n//2, col+n//2, row+n//2)
+        result.append(')')
+        return 
+        
+  if referencePoint == '0':
+    result.append('0')
+  elif referencePoint == '1':
+    result.append('1')
+  
+if __name__ == "__main__":
+  N = int(input())
+  video = [list(input().rstrip()) for _ in range(N)]
+
+  result = []
+  Divied(N, 0, 0)
+  print(''.join(result))
 ```
 
 # 종이의 개수
