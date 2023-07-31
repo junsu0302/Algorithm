@@ -86,7 +86,43 @@ if __name__ == "__main__":
 # 종이의 개수
 `1780` `Silver 2`
 ```python
+import sys
+input = sys.stdin.readline
 
+def Divied(n, col, row):
+  global minusCount, zeroCount, plusCount
+  referencePoint = paper[row][col]
+
+  for r in range(row, row+n):
+    for c in range(col, col+n):
+      if referencePoint != paper[r][c]:
+        Divied(n//3, col, row)
+        Divied(n//3, col+n//3, row)
+        Divied(n//3, col+n*2//3, row)
+        Divied(n//3, col, row+n//3)
+        Divied(n//3, col+n//3, row+n//3)
+        Divied(n//3, col+n*2//3, row+n//3)
+        Divied(n//3, col, row+n*2//3)
+        Divied(n//3, col+n//3, row+n*2//3)
+        Divied(n//3, col+n*2//3, row+n*2//3)
+        return
+
+  if referencePoint == 1:
+    plusCount += 1
+  elif referencePoint == 0:
+    zeroCount += 1
+  elif referencePoint == -1:
+    minusCount += 1
+
+if __name__ == "__main__":
+  N = int(input())
+  paper = [list(map(int, input().rstrip().split())) for _ in range(N)] 
+  minusCount, zeroCount, plusCount = 0, 0, 0
+
+  Divied(N, 0, 0)
+  print(minusCount)
+  print(zeroCount)
+  print(plusCount)
 ```
 
 # 곱셈
