@@ -128,13 +128,66 @@ if __name__ == "__main__":
 # 곱셈
 `1629` `Silver 1`
 ```python
+import sys
+input = sys.stdin.readline
 
+"""
+지수 법칙
+A^m+n = A^m x A^n
+
+나머지 분배 법칙
+(AxB)%C = (A%C) *(B%C) % C
+"""
+
+A, B, C = map(int,sys.stdin.readline().split()) 
+
+def Divied(A, B): 
+  if B == 1: 
+    return A % C 
+  else: 
+    tmp = Divied(A, B//2) 
+    if B % 2 == 0: 
+      return (tmp * tmp) % C 
+    else: 
+      return (tmp * tmp * A) % C 
+      
+print(Divied(A, B))
 ```
 
 # 이항 계수 3
 `11401` `Gold 1`
 ```python
+import sys
+input = sys.stdin.readline
 
+N, K = map(int, input().split())
+MOD = 1000000007
+
+# 팩토리얼 값 계산(나머지 연산 적용)
+def factorial(N):
+  tmp = 1
+  for i in range(2, N+1):
+    tmp = (tmp * i) % MOD
+  return tmp
+
+# 거듭제곱 계산(나머지 연산 적용)
+def square(n, k):
+  if k == 0:
+    return 1
+  elif k == 1:
+    return n
+    
+  tmp = square(n, k//2)
+  if k % 2:
+    return tmp * tmp * n % MOD
+  else:
+    return tmp * tmp % MOD
+
+top = factorial(N)
+bot = factorial(N-K) * factorial(K) % MOD
+
+# 페르마의 소정리 이용해서 조합 공식 곱셈 형태로 변형
+print(top * square(bot, MOD-2) % MOD)
 ```
 
 # 행렬 곱셈
