@@ -193,19 +193,97 @@ print(top * square(bot, MOD-2) % MOD)
 # 행렬 곱셈
 `2740` `Silver 5`
 ```python
+import sys
+input = sys.stdin.readline
 
+N, M = map(int, input().rstrip().split())
+matrix1 = [list(map(int, input().rstrip().split())) for _ in range(N)]
+M, K = map(int, input().rstrip().split())
+matrix2 = [list(map(int, input().rstrip().split())) for _ in range(M)]
+
+result = [[0 for _ in range(K)] for _ in range(N)]
+for r in range(N):
+  for c in range(K):
+    tmp = 0
+    for i in range(M):
+      tmp += matrix1[r][i] * matrix2[i][c]
+    result[r][c] = tmp
+
+for idx in result:
+  print(*idx)
 ```
 
 # 행렬 제곱
 `10830` `Gold 4`
 ```python
+import sys
+input = sys.stdin.readline
 
+def matrixMul(a, b):
+  result = [[0 for _ in range(N)] for _ in range(N)]
+
+  for i in range(N):
+    for j in range(N):
+      for k in range(N):
+        result[i][j] += a[i][k] * b[k][j]
+
+  for i in range(N):
+    for j in range(N):
+      result[i][j] %= 1000
+
+  return result
+
+if __name__ == "__main__":
+  N, B = map(int, input().rstrip().split())
+  matrix = [list(map(int, input().rstrip().split())) for _ in range(N)]
+  # 2진법으로 변환하여 분할정복 실행
+  B = bin(B)[2:]
+
+  # 단위 행렬
+  indentity_matrix = [[1 if i == j else 0 for i in range(N)] for j in range(N)]
+
+  # 2진법 자릿수만큼 제곱 & 제곱한 행렬끼리 곱해줌
+  result = indentity_matrix[:]
+  for i in range(len(B)):
+    if B[-i-1] == '1':
+      tmp = matrix[:]
+      while i != 0:
+        tmp = matrixMul(tmp, tmp)
+        i -= 1
+      result = matrixMul(result, tmp)
+
+  for idx in result:
+    print(*idx)
 ```
 
 # 피보나치 수 6
 `11444` `Gold 2`
 ```python
+import sys
+input = sys.stdin.readline
+MOD = 1000000007
 
+def fibonacci(n):
+  if dp.get(n) != None:
+    return dp[n]
+  if n == 0:
+    return 0
+  elif n == 1 or n == 2:
+    return 1
+  elif n % 2 == 0:
+    dp[n//2+1] = fibonacci(n//2+1) % MOD
+    dp[n//2-1] = fibonacci(n//2-1) % MOD
+    return dp[n//2+1] ** 2 - dp[n//2-1] ** 2
+  else:
+    dp[n//2+1] = fibonacci(n//2+1) % MOD
+    dp[n//2] = fibonacci(n//2) % MOD
+    return dp[n//2+1] ** 2 + dp[n//2] ** 2
+
+if __name__ == "__main__":
+  N = int(input())
+  dp = dict()
+  result = fibonacci(N) % MOD
+  print(result)
 ```
 
 # 히스토그램에서 가장 큰 직사각형
