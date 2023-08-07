@@ -289,5 +289,55 @@ if __name__ == "__main__":
 # 히스토그램에서 가장 큰 직사각형
 `6549` `Platinum 5`
 ```python
+from collections import deque
+import sys
+input = sys.stdin.readline
 
+"""
+1. 스택이 비어있으면 스택에 현재 막대기를 추가한다.
+2. 스택에 마지막으로 들어간 막대보다 짧은 막대를 만나면 스택에 들어있는 막대의 넓이를 계산한다.
+3. 스택에 들어있는 막대를 꺼낼 때는, 현재 막대의 길이보다 큰 것까지만 꺼낸다.
+4. 스택에 마지막으로 들어간 막대보다 긴 막대를 만나면 스택에 추가한다.
+5. 위 단계를 반복한 후 스택에 남은 막대가 있는지 확인한다.
+"""
+
+while True:
+  inputData = list(map(int, input().rstrip().split()))
+
+  if inputData[0] == 0:
+    break
+
+  stack = deque()
+  maxResult = 0
+
+  for i, height in enumerate(inputData):
+    if i == 0:
+      continue
+
+    # 스택의 가장 위쪽 막대기보다 현재 막대기의 높이가 작은 경우
+    if stack and stack[-1][1] > height:
+      while stack: # 스택에서 빼내며 최대 직사각형 넓이 계산
+        stackI, stackHeight = stack.pop()
+        widthStart = 1
+        if stack:
+          widthStart = stack[-1][0] + 1
+        result = (i-widthStart) * stackHeight
+        maxResult = max(result, maxResult) # 최댓값 갱신
+        # 스택에 들어있는 막대 중에서 현재 막대의 길이보다 큰 것들만 꺼내서 계산
+        if not stack or stack[-1][1] <= height:
+          break
+    # 스택이 비어있거나 스택의 가장 왼쪽 막대기보다 현재 막대기의 높이가 크거나 같은 경우
+    if not stack or stack[-1][1] <= height:
+      stack.append((i, height)) # 스택에 현재 막대기를 추가
+
+  # 반복이 종료되고, 스택에 남은 막대기가 있는 경우
+  while stack:
+    stackI, stackHeight = stack.pop()
+    widthStart = 1
+    if stack:
+      widthStart = stack[-1][0] + 1
+    result = (inputData[0]+1 - widthStart) * stackHeight
+    maxResult = max(result, maxResult) # 최댓값 갱신
+  # 최대 
+  print(maxResult)
 ```
