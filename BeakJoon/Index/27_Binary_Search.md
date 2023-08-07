@@ -10,3 +10,96 @@
 
 이분 탐색은 일반적으로 정렬된 배열 or 리스트에서 특정 값의 존재 여부를 빠르게 확인하는데 사용한다. 대표적으로 데이터베이스 인덱스 겁색, 계산 문제에서 최적값 찾기, 정렬된 리스트 내에서의 범위 찾기 등에서 활용된다.
 뿐만 아니라 이진 검색 트리와 같은 자료 구조를 구현하는데 사용되기도 한다.
+
+# 수 찾기
+`Silver 4` `1920`
+```python
+import sys
+input = sys.stdin.readline
+
+def binarySearch(start, end, target):
+  if start > end:
+    return 0
+
+  mid = (start + end) // 2
+  if target == inputData[mid]:
+    return 1
+  elif target > inputData[mid]:
+    return binarySearch(mid+1, end, target)
+  elif target < inputData[mid]:
+    return binarySearch(start, mid-1, target)
+  
+if __name__ == "__main__":
+  N = int(input())
+  inputData = sorted(list(map(int, input().rstrip().split())))
+  M = int(input())
+  targets = list(map(int, input().rstrip().split())) 
+
+  for idx in targets:
+    print(binarySearch(0, N-1, idx))
+```
+
+# 숫자 카드 2
+`Silver 4` `10816`
+```python
+import sys
+input = sys.stdin.readline
+
+def binarySearch(start, end, target):
+  if start > end:
+    return 0
+
+  mid = (start + end) // 2
+  if target == inputData[mid]:
+    return resultDict[target]
+  elif target > inputData[mid]:
+    return binarySearch(mid+1, end, target)
+  elif target < inputData[mid]:
+    return binarySearch(start, mid-1, target)
+  
+if __name__ == "__main__":
+  N = int(input())
+  inputData = sorted(list(map(int, input().rstrip().split())))
+  M = int(input())
+  targets = list(map(int, input().rstrip().split())) 
+
+  resultDict = {}
+  for idx in inputData:
+    if idx in resultDict:
+      resultDict[idx] += 1
+    else:
+      resultDict[idx] = 1
+
+  for target in targets:
+    print(binarySearch(0, N-1, target), end=' ')
+```
+
+# 랜선 자르기
+`Silver 2` `1654`
+```python
+
+```
+
+# 나무 자르기
+`Silver 2` `2805`
+```python
+
+```
+
+# 공유기 설치
+`Gold 4` `2110`
+```python
+
+```
+
+# K번째 수
+`Gold 2` `1300`
+```python
+
+```
+
+# 가장 긴 증가하는 부분 수열 2
+`Gold 2` `12015`
+```python
+
+```
