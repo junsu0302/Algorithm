@@ -77,13 +77,64 @@ if __name__ == "__main__":
 # 랜선 자르기
 `Silver 2` `1654`
 ```python
+import sys
+input = sys.stdin.readline
 
+def binarySearch(start, end):
+  if start > end:
+    return 0
+
+  mid = (start + end) // 2
+  count = targetCount(mid)
+  if count >= N:
+    return max(mid, binarySearch(mid+1, end))
+  else:
+    return binarySearch(start, mid-1)
+
+def targetCount(targetLen):
+  count = 0
+  for idx in inputData:
+    count += idx // targetLen
+
+  return count
+
+if __name__ == "__main__":
+  K, N = map(int, input().rstrip().split())
+  inputData = [int(input()) for _ in range(K)]
+
+  print(binarySearch(1, max(inputData)))
 ```
 
 # 나무 자르기
 `Silver 2` `2805`
 ```python
+import sys
+input = sys.stdin.readline
 
+def binarySearch(start, end):
+  if start > end:
+    return -1
+
+  mid = (start + end) // 2
+  count = restLenCount(mid)
+  if count >= M:
+    return max(mid, binarySearch(mid+1, end))
+  else:
+    return binarySearch(start, mid-1)
+
+def restLenCount(target):
+  restLen = 0
+  for idx in trees:
+    if idx > target:
+      restLen += idx - target
+
+  return restLen
+
+if __name__ == "__main__":
+  N, M = map(int, input().rstrip().split())
+  trees = list(map(int, input().rstrip().split()))
+  result = binarySearch(0, max(trees))
+  print(result)
 ```
 
 # 공유기 설치
