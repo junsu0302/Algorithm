@@ -140,7 +140,7 @@ if __name__ == "__main__":
 # 공유기 설치
 `Gold 4` `2110`
 ```python
-import sys
+
 ```
 
 # K번째 수
