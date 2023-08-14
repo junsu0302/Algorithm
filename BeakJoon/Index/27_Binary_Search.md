@@ -141,16 +141,119 @@ if __name__ == "__main__":
 `Gold 4` `2110`
 ```python
 import sys
+input = sys.stdin.readline
+
+def binarySearch(start, end):
+  if start > end:
+    return -1
+
+  mid = (start + end) // 2
+  current = coordinates[0]
+  count = 1
+
+  for i in range(1, len(coordinates)):
+    if coordinates[i] >= current + mid:
+      current = coordinates[i]
+      count += 1
+
+  if count >= C:
+    return max(mid, binarySearch(mid+1, end))
+  else:
+    return binarySearch(start, mid-1)
+  
+if __name__ == "__main__":
+  N, C = map(int, input().rstrip().split())
+  coordinates = sorted([int(input()) for _ in range(N)])
+  print(binarySearch(1, coordinates[-1] - coordinates[0]))
 ```
 
 # K번째 수
 `Gold 2` `1300`
 ```python
+import sys
+import math
+input = sys.stdin.readline
 
+def countIndex(N, x):
+  tmp = int(math.sqrt(x))
+
+  targetSum = 0
+  for i in range(1, tmp+1):
+    targetSum += min(N, x//i)
+  targetSum = 2 * targetSum - tmp*tmp
+  return targetSum
+
+def binarySearch(start, end):
+  if start > end:
+    return start
+
+  mid = (start + end) // 2
+  count = countIndex(N, mid)
+
+  if count >= K:
+    return binarySearch(start, mid-1)
+  elif count < K:
+    return binarySearch(mid+1, end)
+    
+if __name__ == "__main__":
+  N = int(input())
+  K = int(input())
+
+  print(binarySearch(1, N*N))
 ```
 
 # 가장 긴 증가하는 부분 수열 2
 `Gold 2` `12015`
 ```python
+import sys
+from collections import deque
+input = sys.stdin.readline
 
+def binarySearch(start, end, target, arr):
+  if start > end:
+    return start
+
+  mid = (start + end) // 2
+  if arr[mid] >= target:
+    return binarySearch(start, mid - 1, target, arr)
+  elif arr[mid] < target:
+    return binarySearch(mid + 1, end, target, arr)
+
+def makeSequence():
+  for idx in sequence:
+    if not stack or stack[-1] < idx:
+      stack.append(idx)
+    else:
+      tmp = binarySearch(0, len(stack) - 1, idx, stack)
+      stack[tmp] = idx
+
+  return len(stack)
+
+if __name__ == "__main__":
+  N = int(input())
+  sequence = list(map(int, input().rstrip().split()))
+  stack = deque()
+  print(makeSequence())
+```
+시간 초과 방지를 위한 모듈 사용
+```
+import sys
+from bisect import bisect_left
+input = sys.stdin.readline
+
+def makeSequence():
+  stack = []
+  for idx in sequence:
+    if not stack or stack[-1] < idx:
+      stack.append(idx)
+    else:
+      tmp = bisect_left(stack, idx)  # bisect_left 사용
+      stack[tmp] = idx
+
+  return len(stack)
+
+if __name__ == "__main__":
+  N = int(input())
+  sequence = list(map(int, input().rstrip().split()))
+  print(makeSequence())
 ```
