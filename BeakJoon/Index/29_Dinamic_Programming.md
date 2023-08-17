@@ -24,7 +24,42 @@
 # 1. 파일 합치기
 `Gold 3` `11066`
 ```python
+import sys
+input = sys.stdin.readline
 
+def BottomUp(dpValue, dpIndex, sums):
+  for distance in range(1, K):
+    for start in range(K-distance):
+      end = start + distance
+      minCostValue = 50000000
+      minCostIndex = start
+      
+      for mid in range(dpIndex[start][end-1], dpIndex[start+1][end]+1):
+        cost = dpValue[start][mid] + dpValue[mid+1][end] + sums[end+1] - sums[start]
+        if cost < minCostValue:
+          minCostValue = cost
+          minCostIndex = mid
+          
+      dpValue[start][end] = minCostValue
+      dpIndex[start][end] = minCostIndex
+  return dpValue[0][K-1]
+  
+if __name__ == "__main__":
+  T = int(input())
+  for _ in range(T):
+    K = int(input())
+    chapterFile = list(map(int, input().rstrip().split()))
+
+    sums = [0]
+    for i in range(K):
+      sums.append(sums[-1] + chapterFile[i])
+    valueStorage = [[0 for _ in range(K+1)] for _ in range(K+1)]
+    indexStorage = [[0 for _ in range(K+1)] for _ in range(K+1)]
+    for i in range(K+1):
+      indexStorage[i][i] = i
+
+    result = BottomUp(valueStorage, indexStorage, sums)
+    print(result)
 ```
 
 # 2. 행렬 곱셈 순서
