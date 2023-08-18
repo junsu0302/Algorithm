@@ -35,7 +35,16 @@ def BottomUp(dpValue, dpIndex, sums):
       minCostIndex = start
       
       for mid in range(dpIndex[start][end-1], dpIndex[start+1][end]+1):
+        """
+        행렬 곱셈의 순서 최적화 (Matrix Chain Multiplication)
+        여러 행렬을 순서대로 곱하여 최소의 곱셈 연산 횟수 반환
+        """
         cost = dpValue[start][mid] + dpValue[mid+1][end] + sums[end+1] - sums[start]
+        """
+        dpValue[start][mid] : 
+        dpValue[mid+1][end] : 
+        sums[end+1]-sums[start] : start~end까지의 누적합
+        """
         if cost < minCostValue:
           minCostValue = cost
           minCostIndex = mid
