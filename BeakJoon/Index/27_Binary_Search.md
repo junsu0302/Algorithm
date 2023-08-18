@@ -236,7 +236,7 @@ if __name__ == "__main__":
   print(makeSequence())
 ```
 시간 초과 방지를 위한 모듈 사용
-```
+```python
 import sys
 from bisect import bisect_left
 input = sys.stdin.readline
