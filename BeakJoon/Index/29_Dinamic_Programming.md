@@ -40,11 +40,6 @@ def BottomUp(dpValue, dpIndex, sums):
         여러 행렬을 순서대로 곱하여 최소의 곱셈 연산 횟수 반환
         """
         cost = dpValue[start][mid] + dpValue[mid+1][end] + sums[end+1] - sums[start]
-        """
-        dpValue[start][mid] : 
-        dpValue[mid+1][end] : 
-        sums[end+1]-sums[start] : start~end까지의 누적합
-        """
         if cost < minCostValue:
           minCostValue = cost
           minCostIndex = mid
