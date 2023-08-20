@@ -10,7 +10,7 @@ https://justicehui.github.io/hard-algorithm/2020/04/30/monge-array/
 - Naive Complexity : $O(n^2)$
 - Optimized Complexity : $O(nlogn)$
 
-컨벡스 헐 최적화는 동적 계획법 최적화 중에서 가장 간단한 형태이다. 
+컨벡스 헐 최적화는 동적 계획법 최적화 중에서 가장 간단한 형태이다
 
 CHT는 다음과 같은 Lemma를 기반으로 위 동적 계획법을 최적화한다 :
 - Lemma. \
