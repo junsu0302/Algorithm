@@ -29,7 +29,27 @@ if __name__ == "__main__":
 # 오큰수
 `Gold 4` `17298`
 ```python
+import sys
+input = sys.stdin.readline
 
+def NGF(sequence):
+  n = len(sequence)
+  stack = []
+  for i in range(n):
+    while stack and sequence[i] > sequence[stack[-1]]:
+      sequence[stack.pop()] = sequence[i]
+    stack.append(i)
+  while stack:
+    sequence[stack.pop()] = -1
+
+  return sequence
+
+if __name__ == "__main__":
+  N = int(input())
+  sequence = list(map(int, input().rstrip().split()))
+  result = NGF(sequence)
+  print(' '.join(map(str, result)))
+  
 ```
 
 # 오등큰수
@@ -63,7 +83,36 @@ if __name__ == "__main__":
 # 히스토그램
 `Platinum 5` `1725`
 ```python
+import sys
+input = sys.stdin.readline
 
+def findArea(n, inputList):
+  stack = []
+  result = 0
+  for i in range(N):
+    while stack and inputList[stack[-1]] > inputList[i]:
+      height = inputList[stack.pop()]
+      width = i
+      if stack:
+        width = i - stack[-1] - 1
+      result = max(result, height * width)
+    stack.append(i)
+    
+  while stack:
+    height = inputList[stack.pop()]
+    width = n
+    if stack:
+      width = n - stack[-1] - 1
+    result = max(result, height * width)
+    
+  return result
+
+if __name__ == '__main__':
+  N = int(input())
+  inputList = [int(input()) for _ in range(N)]
+
+  result = findArea(N, inputList)
+  print(result)
 ```
 
 # 오아시스 재결합
