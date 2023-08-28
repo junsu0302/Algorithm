@@ -36,13 +36,17 @@
    
 # 그래프 순회 (Graph Traversal)
 그래프 순회(Graph Traversal)는 그래프 내의 모든 노드와 간선을 효율적으로 방문하는 과정이다. 일반적인 그래프 순회 방식은 다음 2가지가 있다.
-1. 깊이 우선 탐색 (DFS, Depth-First Search) : 한 경로를 따라 가능한 멀리까지 탐색한 후, 다른 경로를 따라 탐색
-   - 한 경로를 따라 노드의 자식 노드들을 최대한 탐색
-   - 자식 노드들을 모두 방문한 후 형제 노드로 이동
-   - 재귀 함수를 사용하여 구현
-2. 너비 우선 탐색 (BFS, Freadth-First Search) : 한 노드의 모든 이웃 노드들을 먼저 탐색한 후, 해당 이웃 노드들의 이웃 노드들을 순차적으로 탐색
-   - 한 레벨의 모든 노드를 방문한 후 다음 레벨로 이동
-   - 큐를 사용하여 노드를 탐색 순서대로 저장하고 처리
+- 깊이 우선 탐색 (DFS, Depth-First Search) : 한 경로를 따라 가능한 멀리까지 탐색한 후, 다른 경로를 따라 탐색
+  1. 대기열(Stack)과 방문목록(Visited) 배열을 초기화
+  2. 노드 0에 방문하여 아직 방문하지 않은 인접 노드를 대기열에 추가
+  3. 인접 노드 중 가장 위에 있는 노드에 방문 후 Stack에서 pop, Visited에 push
+  4. Stack이 비어있을 때까지 반
+     
+- 너비 우선 탐색 (BFS, Freadth-First Search) : 한 노드의 모든 이웃 노드들을 먼저 탐색한 후, 해당 이웃 노드들의 이웃 노드들을 순차적으로 탐색
+  1. 대기열(Queue)과 방문목록(Visited) 배열을 초기화
+  2. 노드 0을 Queue에 넣고 Visited에 방문한 것으로 표시
+  3. 대기열 앞의 노드 0을 제거하고 방문하지 않은 이웃을 Queue에 추가, Visited 갱신
+  4. Queue에 값을 추가 못할 떄까지 반복
   
 그래프 순회의 사용 사례는 다음과 같다.
 1. DFS (깊이 우선 탐색)
@@ -60,25 +64,192 @@
 # 알고리즘 수업 - 깊이 우선 탐색 1
 `Silver 2` `24479`
 ```python
+import sys
+input = sys.stdin.readline
 
+def DFS(start, graph):
+  visited = [-1 for _ in range(N+1)] # 방문 여부 확인
+  path = [0 for _ in range(N+1)] # 각 노드가 방문된 순서
+  stack = [start]
+  count = 1 # 방문 순서
+
+  while stack:
+    node = stack.pop() # 최상위 원소
+
+    # 이미 방문된 최상단 노드
+    if visited[node] == 1:
+      continue
+
+    # 방문이 아직 안 된 상태라면
+    visited[node] = 1 # 방문 처리
+    path[node] = count  # 방문 순서 할당
+    count += 1
+
+    # 해당 노드에 존재하는 하위 노드를 stack에 할당
+    for adNode in graph[node]:
+      if visited[adNode] == -1:
+        stack.append(adNode)
+
+  return path
+
+if __name__ == "__main__":
+  N, M, R = map(int, input().split())
+  
+  # 그래프 생성 : 각 노드마다 연결된 정보 파악
+  graph = [[] for _ in range(N+1)]
+  for _ in range(M):
+    a, b = map(int, input().split())
+    graph[a].append(b)
+    graph[b].append(a)
+  
+  # 그래프의 각 노드에 대한 연결 정보 내림차순 정렬
+  for idx in range(1, len(graph)):
+    graph[idx].sort(reverse=True)
+  
+  result = DFS(R, graph)
+
+  print(*result[1:], sep='\n')
 ```
 
 # 알고리즘 수업 - 깊이 우선 탐색 2
 `Silver 2` `24480`
 ```python
+import sys
+input = sys.stdin.readline
 
+def DFS(start, graph):
+  visited = [-1 for _ in range(N+1)]
+  path = [0 for _ in range(N+1)]
+  stack = [start]
+  count = 1 
+
+  while stack:
+    node = stack.pop() 
+
+    if visited[node] == 1:
+      continue
+
+    visited[node] = 1 
+    path[node] = count 
+    count += 1
+
+    for adNode in graph[node]:
+      if visited[adNode] == -1:
+        stack.append(adNode)
+
+  return path
+
+if __name__ == "__main__":
+  N, M, R = map(int, input().split())
+  
+  graph = [[] for _ in range(N+1)]
+  for _ in range(M):
+    a, b = map(int, input().split())
+    graph[a].append(b)
+    graph[b].append(a)
+  
+  for idx in range(1, len(graph)):
+    graph[idx].sort(reverse=False)
+  
+  result = DFS(R, graph)
+
+  print(*result[1:], sep='\n')
 ```
 
 # 알고리즘 수업 - 너비 우선 탐색 1
 `Silver 2` `24444`
 ```python
+import sys
+from collections import deque
+input = sys.stdin.readline
 
+def DFS(start, graph):
+  visited = [-1 for _ in range(N+1)] # 방문 여부 확인
+  path = [0 for _ in range(N+1)] # 각 노드가 방문된 순서
+  count = 1 # 방문 순서
+  queue = deque([start])
+  
+  visited[start] = 1
+  path[start] = count
+  count += 1
+
+  while queue:
+    node = queue.popleft()
+
+    for adNode in graph[node]:
+      if visited[adNode] == -1:
+        queue.append(adNode)
+        visited[adNode] = 1
+        path[adNode] = count
+        count += 1
+
+  return path
+
+if __name__ == "__main__":
+  N, M, R = map(int, input().split())
+  
+  # 그래프 생성 : 각 노드마다 연결된 정보 파악
+  graph = [[] for _ in range(N+1)]
+  for _ in range(M):
+    a, b = map(int, input().split())
+    graph[a].append(b)
+    graph[b].append(a)
+  
+  # 그래프의 각 노드에 대한 연결 정보 오름차순 정렬
+  for idx in range(1, len(graph)):
+    graph[idx].sort(reverse=False)
+  
+  result = DFS(R, graph)
+
+  print(*result[1:], sep='\n')
 ```
 
 # 알고리즘 수업 - 너비 우선 탐색 2
 `Silver 2` `24445`
 ```python
+import sys
+from collections import deque
+input = sys.stdin.readline
 
+def DFS(start, graph):
+  visited = [-1 for _ in range(N+1)] # 방문 여부 확인
+  path = [0 for _ in range(N+1)] # 각 노드가 방문된 순서
+  count = 1 # 방문 순서
+  queue = deque([start])
+  
+  visited[start] = 1
+  path[start] = count
+  count += 1
+
+  while queue:
+    node = queue.popleft()
+
+    for adNode in graph[node]:
+      if visited[adNode] == -1:
+        queue.append(adNode)
+        visited[adNode] = 1
+        path[adNode] = count
+        count += 1
+
+  return path
+
+if __name__ == "__main__":
+  N, M, R = map(int, input().split())
+  
+  # 그래프 생성 : 각 노드마다 연결된 정보 파악
+  graph = [[] for _ in range(N+1)]
+  for _ in range(M):
+    a, b = map(int, input().split())
+    graph[a].append(b)
+    graph[b].append(a)
+  
+  # 그래프의 각 노드에 대한 연결 정보 내림차 정렬
+  for idx in range(1, len(graph)):
+    graph[idx].sort(reverse=False)
+  
+  result = DFS(R, graph)
+
+  print(*result[1:], sep='\n')
 ```
 
 # 바이러스
