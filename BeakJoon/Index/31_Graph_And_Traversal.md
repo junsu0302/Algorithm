@@ -255,7 +255,47 @@ if __name__ == "__main__":
 # 바이러스
 `Silver 3` `2606`
 ```python
+# 연결된 요소를 찾는 문제이기 때문에 DFS를 사용한다.
+import sys
+input = sys.stdin.readline
 
+def DFS(start, graph, n):
+  visited = [-1 for _ in range(n+1)]
+  stack = [start]
+  count = 0
+
+  while stack:
+    node = stack.pop()
+
+    if visited[node] == 1:
+      continue
+
+    visited[node] = 1
+
+    for adNode in graph[node]:
+      if visited[adNode] == -1:
+        stack.append(adNode)
+
+  for idx in visited:
+    if idx == 1:
+      count += 1
+  return count - 1
+
+if __name__ == "__main__":
+  computerNumber = int(input())
+  linkedNumber = int(input())
+
+  graph = [[] for _ in range(computerNumber+1)]
+  for _ in range(linkedNumber):
+    u, v = map(int, input().rstrip().split())
+    graph[u].append(v)
+    graph[v].append(u)
+
+  for idx in range(1, len(graph)):
+    graph[idx].sort()
+
+  result = DFS(1, graph, computerNumber)
+  print(result)
 ```
 
 # DFS와 BFS
