@@ -163,7 +163,7 @@ import sys
 from collections import deque
 input = sys.stdin.readline
 
-def DFS(start, graph):
+def BFS(start, graph):
   visited = [-1 for _ in range(N+1)] # 방문 여부 확인
   path = [0 for _ in range(N+1)] # 각 노드가 방문된 순서
   count = 1 # 방문 순서
@@ -199,7 +199,7 @@ if __name__ == "__main__":
   for idx in range(1, len(graph)):
     graph[idx].sort(reverse=False)
   
-  result = DFS(R, graph)
+  result = BFS(R, graph)
 
   print(*result[1:], sep='\n')
 ```
@@ -211,7 +211,7 @@ import sys
 from collections import deque
 input = sys.stdin.readline
 
-def DFS(start, graph):
+def BFS(start, graph):
   visited = [-1 for _ in range(N+1)] # 방문 여부 확인
   path = [0 for _ in range(N+1)] # 각 노드가 방문된 순서
   count = 1 # 방문 순서
@@ -247,7 +247,7 @@ if __name__ == "__main__":
   for idx in range(1, len(graph)):
     graph[idx].sort(reverse=False)
   
-  result = DFS(R, graph)
+  result = BFS(R, graph)
 
   print(*result[1:], sep='\n')
 ```
@@ -258,7 +258,7 @@ if __name__ == "__main__":
 # 연결된 요소를 찾는 문제이기 때문에 DFS를 사용한다.
 import sys
 input = sys.stdin.readline
-
+  
 def DFS(start, graph, n):
   visited = [-1 for _ in range(n+1)]
   stack = [start]
@@ -271,28 +271,27 @@ def DFS(start, graph, n):
       continue
 
     visited[node] = 1
+    count += 1
 
     for adNode in graph[node]:
       if visited[adNode] == -1:
         stack.append(adNode)
 
-  for idx in visited:
-    if idx == 1:
-      count += 1
   return count - 1
 
 if __name__ == "__main__":
   computerNumber = int(input())
   linkedNumber = int(input())
-
+  
   graph = [[] for _ in range(computerNumber+1)]
+
   for _ in range(linkedNumber):
     u, v = map(int, input().rstrip().split())
     graph[u].append(v)
     graph[v].append(u)
 
   for idx in range(1, len(graph)):
-    graph[idx].sort()
+    graph[idx].sort(reverse=True)
 
   result = DFS(1, graph, computerNumber)
   print(result)
@@ -301,19 +300,161 @@ if __name__ == "__main__":
 # DFS와 BFS
 `Silver 2` `1260`
 ```python
+import sys
+from collections import deque
+input = sys.stdin.readline
+  
+def DFS(start, graph, n):
+  visited = [-1 for _ in range(n+1)]
+  path = []
+  stack = [start]
 
+  while stack:
+    node = stack.pop() 
+
+    if visited[node] == 1:
+      continue
+
+    visited[node] = 1
+    path.append(node)
+
+    for adNode in graph[node]:
+      if visited[adNode] == -1:
+        stack.append(adNode)
+
+  return path
+
+def BFS(start, graph, n):
+  visited = [-1 for _ in range(n+1)]
+  path = [] 
+  queue = deque([start])
+  
+  visited[start] = 1
+  path.append(start)
+
+  while queue:
+    node = queue.popleft()
+
+    for adNode in graph[node]:
+      if visited[adNode] == -1:
+        queue.append(adNode)
+        visited[adNode] = 1
+        path.append(adNode)
+
+  return path
+
+if __name__ == "__main__":
+  N, M, V = map(int, input().rstrip().split())
+  
+  graph = [[] for _ in range(N+1)]
+
+  for _ in range(M):
+    u, v = map(int, input().rstrip().split())
+    graph[u].append(v)
+    graph[v].append(u)
+
+  # DFS에서 인접한 정점 중 작은 수부터 접근하기 위해서는 내림차순으로 정렬한다.
+  for idx in range(1, len(graph)):
+    graph[idx].sort(reverse=True)
+  DFSResult = DFS(V, graph, N)
+
+  # BFS에서 인접한 정점 중 작은 수부터 접근하기 위해서는 오름차순으로 정렬한다.
+  for idx in range(1, len(graph)):
+    graph[idx].sort(reverse=False)
+  BFSResult = BFS(V, graph, N)
+
+  print(' '.join(map(str, DFSResult)))
+  print(' '.join(map(str, BFSResult)))
 ```
 
 # 단지 번호 붙이기
 `Silver 1` `2667`
 ```python
+import sys
+input = sys.stdin.readline
 
+def DFS(x, y, graph, maxX, maxY):
+  global count
+  dx = [1, -1, 0, 0]
+  dy = [0, 0, 1, -1]
+
+  stack = [(x, y)] 
+  graph[y][x] = '0' # 방문한 곳 0으로 설정
+  count += 1
+
+  while stack:
+    x, y = stack.pop()
+
+    for i in range(4): # 상하좌우 확인
+      nx = x + dx[i]
+      ny = y + dy[i]
+
+      # 정해진 범위 내의 인접한 좌표에 있는 경우
+      if nx >= 0 and nx < maxX and ny >= 0 and ny < maxY and graph[ny][nx] == '1':
+        stack.append((nx, ny))
+        graph[ny][nx] = '0'
+        count += 1
+
+if __name__ == "__main__":
+  N = int(input().rstrip())
+  graph = [list(str(input().rstrip())) for _ in range(N)]
+
+  result = []
+  # 이중 for문으로 graph를 하나씩 돌면서 1인 구간 탐색 (시작점 탐색)
+  for x in range(N):
+    for y in range(N):
+      if graph[y][x] == '1':
+        count = 0
+        DFS(x, y, graph, N, N)
+        result.append(count)
+
+  print(len(result))
+  result.sort()
+  print('\n'.join(map(str, result)))
 ```
 
 # 유기농 배추
 `Silver 2` `1012`
 ```python
+import sys
+input = sys.stdin.readline
 
+def DFS(x, y, graph, maxX, maxY):
+  dx = [1, -1, 0, 0]
+  dy = [0, 0, 1, -1]
+
+  stack = [(x, y)]
+  graph[y][x] = 0
+
+  while stack:
+    x, y = stack.pop()
+
+    for i in range(4):
+      nx = x + dx[i]
+      ny = y + dy[i]
+
+      if nx >= 0 and nx < maxX and ny >= 0 and ny < maxY and graph[ny][nx] == 1:
+        stack.append((nx, ny))
+        graph[ny][nx] = 0
+
+if __name__ == "__main__":
+  T = int(input())
+  for _ in range(T):
+    M, N, K = map(int, input().rstrip().split())
+        
+    graph = [[0 for _ in range(M)] for _ in range(N)]
+    for _ in range(K):
+      c, r = map(int, input().rstrip().split())
+      graph[r][c] = 1
+
+    result = 0
+    for x in range(M):
+      for y in range(N):
+        if graph[y][x] == 1:
+          DFS(x, y, graph, M, N)
+          result += 1
+
+    print(result)
 ```
 
 # 미로 탐색
