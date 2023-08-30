@@ -98,9 +98,9 @@ if __name__ == "__main__":
   # 그래프 생성 : 각 노드마다 연결된 정보 파악
   graph = [[] for _ in range(N+1)]
   for _ in range(M):
-    a, b = map(int, input().split())
-    graph[a].append(b)
-    graph[b].append(a)
+    u, v = map(int, input().split())
+    graph[u].append(v)
+    graph[v].append(u)
   
   # 그래프의 각 노드에 대한 연결 정보 내림차순 정렬
   for idx in range(1, len(graph)):
@@ -144,9 +144,9 @@ if __name__ == "__main__":
   
   graph = [[] for _ in range(N+1)]
   for _ in range(M):
-    a, b = map(int, input().split())
-    graph[a].append(b)
-    graph[b].append(a)
+    u, v = map(int, input().split())
+    graph[u].append(v)
+    graph[v].append(u)
   
   for idx in range(1, len(graph)):
     graph[idx].sort(reverse=False)
@@ -191,9 +191,9 @@ if __name__ == "__main__":
   # 그래프 생성 : 각 노드마다 연결된 정보 파악
   graph = [[] for _ in range(N+1)]
   for _ in range(M):
-    a, b = map(int, input().split())
-    graph[a].append(b)
-    graph[b].append(a)
+    u, v = map(int, input().split())
+    graph[u].append(v)
+    graph[v].append(u)
   
   # 그래프의 각 노드에 대한 연결 정보 오름차순 정렬
   for idx in range(1, len(graph)):
@@ -239,9 +239,9 @@ if __name__ == "__main__":
   # 그래프 생성 : 각 노드마다 연결된 정보 파악
   graph = [[] for _ in range(N+1)]
   for _ in range(M):
-    a, b = map(int, input().split())
-    graph[a].append(b)
-    graph[b].append(a)
+    u, v = map(int, input().split())
+    graph[u].append(v)
+    graph[v].append(u)
   
   # 그래프의 각 노드에 대한 연결 정보 내림차 정렬
   for idx in range(1, len(graph)):
