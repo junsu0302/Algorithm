@@ -460,13 +460,68 @@ if __name__ == "__main__":
 # 미로 탐색
 `Silver 1` `2178`
 ```python
+# 최단경로를 찾아야하는 문제이므로 BFS를 사용했다.
+import sys
+from collections import deque
+input = sys.stdin.readline
 
+def BFS(startX, startY, graph, maxX, maxY):
+  dx = [1, -1, 0, 0]
+  dy = [0, 0, 1, -1]
+
+  visited = [[0 for _ in range(maxX)] for _ in range(maxY)]
+  queue = deque([(startX, startY)])
+  visited[startY][startX] = 1
+  graph[startY][startX] = '-1'
+
+  while queue:
+    x, y = queue.popleft()
+
+    for i in range(4):
+      nx = x + dx[i]
+      ny = y + dy[i]
+
+      if 0 <= nx < maxX and 0 <= ny < maxY and graph[ny][nx] == '1':
+        queue.append((nx, ny))
+        visited[ny][nx] = visited[y][x] + 1
+        graph[ny][nx] = '-1'
+
+  return visited[maxY-1][maxX-1]
+  
+if __name__ == "__main__":
+  N, M = map(int, input().rstrip().split())
+  maze = [list(str(input().rstrip())) for _ in range(N)]
+
+  result = BFS(0, 0, maze, M, N)
+  print(result)
 ```
 
 # 숨바꼭질
 `Silver 1` `1697`
 ```python
+import sys
+from collections import deque
+input = sys.stdin.readline
 
+def BFS(start, maxX, target):
+  visited = [0 for _ in range(maxX)]
+  queue = deque([start])
+
+  while queue:
+    x = queue.popleft()
+    if x == target:
+      return visited[x]
+    for nx in (x-1, x+1, 2*x):
+      if 0 <= nx < maxX and not visited[nx]:
+        queue.append(nx)
+        visited[nx] = visited[x] + 1
+      
+  return visited[maxX-1]
+
+if __name__ == "__main__":
+  N, K = map(int, input().rstrip().split())
+  result = BFS(N, 100001, K)
+  print(result)
 ```
 
 # 나이트의 이동
