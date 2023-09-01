@@ -499,6 +499,7 @@ if __name__ == "__main__":
 # 숨바꼭질
 `Silver 1` `1697`
 ```python
+# 두 사람이 만날 수 있는 최단 거리를 구하기 때문에 BFS 사용
 import sys
 from collections import deque
 input = sys.stdin.readline
@@ -527,13 +528,119 @@ if __name__ == "__main__":
 # 나이트의 이동
 `Silver 1` `7562`
 ```python
+# 시작 점과 목표 지점의 최단 거리를 구하는 문제이기 떄문에 BFS 사용
+import sys
+from collections import deque
+input = sys.stdin.readline
 
+def BFS(startX, startY, boardLen, targetX, targetY):
+  dx = [1, 1, 2, 2, -1, -1, -2, -2]
+  dy = [2, -2, 1, -1, 2, -2, 1, -1]
+  
+  visited = [[0 for _ in range(boardLen)] for _ in range(boardLen)]
+  path = [[0 for _ in range(boardLen)] for _ in range(boardLen)]
+  queue = deque([(startX, startY)])
+  visited[startY][startX] = 1
+  path[startY][startX] = 0
+  
+  while queue:
+    x, y = queue.popleft()
+
+    for i in range(8):
+      nx = x + dx[i]
+      ny = y + dy[i]
+
+      if 0 <= nx < boardLen and 0 <= ny < boardLen and visited[ny][nx] == 0:
+        queue.append((nx, ny))
+        visited[ny][nx] = 1
+        path[ny][nx] = path[y][x] + 1
+
+    if x == targetX and y == targetY:
+      break
+
+  return path[targetY][targetX]
+
+if __name__ == "__main__":
+  T = int(input())
+  for _ in range(T):
+    boardLen = int(input())
+    startX, startY = map(int, input().rstrip().split())
+    targetX, targetY = map(int, input().rstrip().split())
+
+    result = BFS(startX, startY, boardLen, targetX, targetY)
+    print(result)
 ```
 
 # 토마토
 `Gold 5` `7576`
 ```python
+# 상자안에서 값이 1인 토마토와 값이 0인 토마토와의 최단 거리를 구하는 문제라고 생각하여 BFS 사용
+import sys
+from collections import deque
+input = sys.stdin.readline
 
+def BFS(startPoint, graph, maxX, maxY):
+  dx = [1, -1, 0, 0]
+  dy = [0, 0, 1, -1]
+
+  visited = [[0 for _ in range(maxX)] for _ in range(maxY)]
+  path = [[0 for _ in range(maxX)] for _ in range(maxY)]
+  queue = deque()
+  maxValue = 0
+
+  for x, y in startPoint:
+    queue.append((x, y))
+    visited[y][x] = 1
+
+  while queue:
+    x, y = queue.popleft()
+
+    for i in range(4):
+      nx = x + dx[i]
+      ny = y + dy[i]
+
+      if 0 <= nx < maxX and 0 <= ny < maxY and visited[ny][nx] == 0 and graph[ny][nx] != -1:
+        queue.append((nx, ny))
+        visited[ny][nx] = 1
+        path[ny][nx] = path[y][x] + 1
+        if path[ny][nx] > maxValue:
+          maxValue = path[ny][nx]
+
+  filledBoard = filledBlank(path, startPoint, graph, maxX, maxY)
+  for item in filledBoard:
+    if 0 in item:
+      return -1
+  
+  return maxValue
+
+def filledBlank(path, startPoint, graph, maxX, maxY):
+  for x, y in startPoint:
+    path[y][x] = -1
+
+  for y in range(maxY):
+    for x in range(maxX):
+      if graph[y][x] == -1:
+        path[y][x] = -1
+
+  return path
+  
+
+def findStartPoint(board, xLen, yLen):
+  output = []
+  for y in range(yLen):
+    for x in range(xLen):
+      if board[y][x] == 1:
+        output.append([x, y])
+
+  return output
+  
+if __name__ == "__main__":
+  M, N = map(int, input().rstrip().split())
+  tomatoBox = [list(map(int, input().rstrip().split())) for _ in range(N)]
+  startPoint = findStartPoint(tomatoBox, M, N)
+
+  result = BFS(startPoint,tomatoBox, M, N)
+  print(result)
 ```
 
 # 토마토
