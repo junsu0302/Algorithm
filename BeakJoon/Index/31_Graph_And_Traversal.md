@@ -709,6 +709,14 @@ def findStartPoint(board, xLen, yLen, zLen):
           output.append([x, y, z])
 
   return output
+  
+if __name__ == "__main__":
+  M, N, H = map(int, input().rstrip().split())
+  tomatoBox = [[list(map(int, input().rstrip().split())) for _ in range(N)] for _ in range(H)]
+  startPoint = findStartPoint(tomatoBox, M, N, H)
+
+  result = BFS(startPoint,tomatoBox, M, N, H)
+  print(result)
 ```
 
 # 뱀과 사다리 게임
