@@ -646,7 +646,69 @@ if __name__ == "__main__":
 # 토마토
 `Gold 5` `7569`
 ```python
+import sys
+from collections import deque
+input = sys.stdin.readline
 
+def BFS(startPoint, graph, maxX, maxY, maxZ):
+  dx = [1, -1, 0, 0, 0, 0]
+  dy = [0, 0, 1, -1, 0 ,0]
+  dz = [0, 0, 0, 0, 1, -1]
+
+  visited = [[[0 for _ in range(maxX)] for _ in range(maxY)] for _ in range(maxZ)]
+  path = [[[0 for _ in range(maxX)] for _ in range(maxY)] for _ in range(maxZ)] 
+  queue = deque()
+  maxValue = 0
+
+  for x, y, z in startPoint:
+    queue.append((x, y, z))
+    visited[z][y][x] = 1
+
+  while queue:
+    x, y, z = queue.popleft()
+
+    for i in range(6):
+      nx = x + dx[i]
+      ny = y + dy[i]
+      nz = z + dz[i]
+
+      if 0 <= nx < maxX and 0 <= ny < maxY and 0 <= nz < maxZ and visited[nz][ny][nx] == 0 and graph[nz][ny][nx] != -1:
+        queue.append((nx, ny, nz))
+        visited[nz][ny][nx] = 1
+        path[nz][ny][nx] = path[z][y][x] + 1
+        if path[nz][ny][nx] > maxValue:
+          maxValue = path[nz][ny][nx]
+
+  filledBoard = filledBlank(path, startPoint, graph, maxX, maxY, maxZ)
+  for board in filledBoard:
+    for item in board:
+      if 0 in item:
+        return -1
+  
+  return maxValue
+
+def filledBlank(path, startPoint, graph, maxX, maxY, maxZ):
+  for x, y, z in startPoint:
+    path[z][y][x] = -1
+
+  for z in range(maxZ):
+    for y in range(maxY):
+      for x in range(maxX):
+        if graph[z][y][x] == -1:
+          path[z][y][x] = -1
+
+  return path
+  
+
+def findStartPoint(board, xLen, yLen, zLen):
+  output = []
+  for z in range(zLen):
+    for y in range(yLen):
+      for x in range(xLen):
+        if board[z][y][x] == 1:
+          output.append([x, y, z])
+
+  return output
 ```
 
 # 뱀과 사다리 게임
