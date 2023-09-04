@@ -722,7 +722,49 @@ if __name__ == "__main__":
 # 뱀과 사다리 게임
 `Gold 5` `16928`
 ```python
+import sys
+from collections import deque
+input = sys.stdin.readline
 
+def BFS(ladder, snake):
+  dice = [6, 5, 4, 3, 2, 1]
+  visited = [0 for _ in range(101)]
+  queue = deque([(1, 0)]) # (현재 칸, 주사위를 던진 횟수)
+
+  while queue:
+    point, throws = queue.popleft()
+
+    if point == 100:
+      return throws
+
+    for move in dice:
+      newPoint = point + move
+
+      if newPoint <= 100 and not visited[newPoint]:
+        visited[newPoint] = 1
+
+        if newPoint in ladder:
+          queue.append((ladder[newPoint], throws + 1))
+        elif newPoint in snake:
+          queue.append((snake[newPoint], throws + 1))
+        else:
+          queue.append((newPoint, throws + 1))
+
+if __name__ == "__main__":
+  N, M = map(int, input().rstrip().split())
+
+  ladder = dict()
+  for _ in range(N):
+    u, v = map(int, input().rstrip().split())
+    ladder[u] = v
+
+  snake = dict()
+  for _ in range(M):
+    u, v = map(int, input().rstrip().split())
+    snake[u] = v
+
+  result = BFS(ladder, snake)
+  print(result)
 ```
 
 # 벽 부수고 이동하기
