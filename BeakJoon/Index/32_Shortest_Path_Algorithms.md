@@ -34,21 +34,24 @@
 ```python
 from sys import stdin, maxsize
 from heapq import heappop, heappush
+
 input = stdin.readline
 INF = maxsize
 
 def Dijkstra(start, graph):
   dp = [INF for _ in range(V+1)]
+  visited = [0 for _ in range(V+1)]
   heap = [(0, start)]
   dp[start] = 0
 
   while heap:
     nowWeight, nowNode = heappop(heap)
+    visited[nowNode] = 1
 
     if dp[nowNode] >= nowWeight:
       for nextNode, nextWeight in graph[nowNode]:
         nextWeight = nextWeight + nowWeight
-        if nextWeight < dp[nextNode]:
+        if nextWeight < dp[nextNode] and visited[nextNode] == 0:
           dp[nextNode] = nextWeight
           heappush(heap, (nextWeight, nextNode))
   return dp
