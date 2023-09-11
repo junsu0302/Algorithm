@@ -32,7 +32,39 @@
 # 최단경로
 `Gold 4` `1753`
 ```python
+from sys import stdin, maxsize
+from heapq import heappop, heappush
+input = stdin.readline
+INF = maxsize
 
+def Dijkstra(start, graph):
+  dp = [INF for _ in range(V+1)]
+  heap = [(0, start)]
+  dp[start] = 0
+
+  while heap:
+    nowWeight, nowNode = heappop(heap)
+
+    if dp[nowNode] >= nowWeight:
+      for nextNode, nextWeight in graph[nowNode]:
+        nextWeight = nextWeight + nowWeight
+        if nextWeight < dp[nextNode]:
+          dp[nextNode] = nextWeight
+          heappush(heap, (nextWeight, nextNode))
+  return dp
+
+if __name__ == "__main__":
+  V, E = map(int, input().rstrip().split())
+  K = int(input())
+
+  graph = [[] for _ in range(V+1)]
+  for _ in range(E):
+    u, v, w = map(int, input().rstrip().split())
+    graph[u].append((v, w))
+
+  result = Dijkstra(K, graph)
+  for i in range(1, V+1):
+    print("INF" if result[i] == INF else result[i])
 ```
 
 # 특정한 최단 경로
