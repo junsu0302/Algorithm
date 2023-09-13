@@ -213,7 +213,9 @@ if __name__ == "__main__":
   
     result = []
     for idx in targetList:
-      if sToEnd[g] + gToEnd[h] + hToEnd[idx] == sToEnd[idx] or sToEnd[h] + hToEnd[g] + gToEnd[idx] == sToEnd[idx]:
+      path1 = sToEnd[g] + gToEnd[h] + hToEnd[idx]
+      path2 = sToEnd[h] + hToEnd[g] + gToEnd[idx]
+      if path1 == sToEnd[idx] or path2 == sToEnd[idx]:
         result.append(idx)
     result.sort()
     print(*result)
