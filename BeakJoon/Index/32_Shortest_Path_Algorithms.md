@@ -224,17 +224,116 @@ if __name__ == "__main__":
 # 타임머신
 `Gold 4` `11657`
 ```python
+from sys import stdin, maxsize
 
+input = stdin.readline
+INF = maxsize
+
+def BellmanFord(nodeNumber, start, graph):
+  costs = [INF for _ in range(nodeNumber+1)]
+  costs[start] = 0
+
+  for _ in range(nodeNumber+1):
+    for now, next, weight in graph:
+      if costs[now] != INF and costs[next] > costs[now] + weight:
+        costs[next] = costs[now] + weight
+
+  for now, next, weight in graph:
+    if costs[now] != INF and costs[next] > costs[now] + weight:
+      return [-1]
+
+  return costs
+
+if __name__ == "__main__":
+  N, M = map(int, input().rstrip().split())
+
+  graph = []
+  for _ in range(M):
+    u, v, w = map(int, input().rstrip().split())
+    graph.append((u, v, w))
+
+  result = BellmanFord(N, 1, graph)
+
+  if result[0] == -1:
+    print(-1)
+  else:
+    for idx in result[2:]:
+      if idx == INF:
+        print(-1)
+      else:
+        print(idx)
 ```
 
 # 플로이드
 `Gold 4` `11404`
 ```python
+from sys import stdin, maxsize
 
+input = stdin.readline
+INF = maxsize
+
+def FloydWarshall(nodeNumber, graph):
+  for i in range(1, nodeNumber+1):
+    graph[i][i] = 0
+
+  for k in range(1, nodeNumber+1):
+    for i in range(1, nodeNumber+1):
+      for j in range(1, nodeNumber+1):
+        if graph[i][j] > graph[i][k] + graph[k][j]:
+          graph[i][j] = graph[i][k] + graph[k][j]
+  
+  return graph
+
+if __name__ == "__main__":
+  N = int(input())
+  M = int(input())
+
+  graph = [[INF for _ in range(N+1)] for _ in range(N+1)]
+  for _ in range(M):
+    u, v, w = map(int, input().rstrip().split())
+    if graph[u][v] > w:
+      graph[u][v] = w
+
+  result = FloydWarshall(N, graph)
+  for i in range(1, N+1):
+    for j in range(1, N+1):
+      if graph[i][j] == INF: print(0, end=' ')
+      else: print(graph[i][j], end=' ')
+    print()
 ```
 
 # 운동
 `Gold 4` `1956`
 ```python
+from sys import stdin, maxsize
 
+input = stdin.readline
+INF = maxsize
+
+def FloydWarshall(nodeNumber, graph):
+  for k in range(1, nodeNumber+1):
+    for i in range(1, nodeNumber+1):
+      for j in range(1, nodeNumber+1):
+        if graph[i][j] > graph[i][k] + graph[k][j]:
+          graph[i][j] = graph[i][k] + graph[k][j]
+
+  result = INF
+  for i in range(1, nodeNumber+1):
+    if result > graph[i][i]:
+      result = graph[i][i]
+
+  return result
+
+if __name__ == "__main__":
+  V, E = map(int, input().rstrip().split())
+
+  graph = [[INF for _ in range(V+1)] for _ in range(V+1)]
+  for _ in range(E):
+    u, v, w = map(int, input().rstrip().split())
+    if graph[u][v] > w:
+      graph[u][v] = w
+
+  result = FloydWarshall(V, graph)
+  if result == INF: print(-1)
+  else: print(result)
 ```
