@@ -17,13 +17,80 @@
 # 두 수의 합
 `Sliver 3` `3273`
 ```python
+from sys import stdin
+input = stdin.readline
 
+def twoPointer(numberList, target):
+  numberList.sort()
+  left = 0
+  right = len(numberList) - 1
+
+  count = 0
+  while left < right:
+    leftNumber = numberList[left]
+    rightNumber = numberList[right]
+
+    if leftNumber + rightNumber > target:
+      right -= 1
+    elif leftNumber + rightNumber < target:
+      left += 1
+    else:
+      count += 1
+      left += 1
+      right -= 1
+
+  return count
+
+if __name__ == "__main__":
+  N = int(input())
+  numberList = list(map(int, input().rstrip().split()))
+  x = int(input())
+
+  result = twoPointer(numberList, x)
+  print(result)
 ```
 
 # 두 용액
 `Gold 5` `2470`
 ```python
+from sys import stdin, maxsize
+input = stdin.readline
 
+INF = maxsize
+
+def findNumber(numberList):
+  numberList.sort()
+  left = 0
+  right = len(numberList) - 1
+
+  targetList = [0, 0]
+  targetValue = INF
+  while left < right:
+    leftNumber = numberList[left]
+    rightNumber = numberList[right]
+    currentSum = leftNumber + rightNumber
+
+    if currentSum == 0:
+      targetList = [leftNumber, rightNumber]
+      return targetList
+
+    if currentSum > 0:
+      right -= 1
+    elif currentSum < 0:
+      left += 1
+
+    if abs(currentSum) < abs(targetValue):
+      targetList = [leftNumber, rightNumber]
+      targetValue = currentSum
+  
+  return targetList
+
+if __name__ == "__main__":
+  N = int(input())
+  solutionList = list(map(int, input().rstrip().split()))
+  
+  result = findNumber(solutionList)
+  print(*result)
 ```
 
 # 부분합
