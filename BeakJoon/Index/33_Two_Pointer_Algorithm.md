@@ -96,7 +96,38 @@ if __name__ == "__main__":
 # 부분합
 `Gold 4` `1806`
 ```python
+from sys import stdin
+input = stdin.readline
 
+def twoPointer(numberList, target):
+  start = 0
+  valueSum = 0
+  for end, value in enumerate(numberList, 1):
+    valueSum += value
+    if valueSum >= target:
+      break
+
+  if valueSum < target:
+    return 0
+
+  while True:
+    valueSum -= numberList[start]
+    start += 1
+    if valueSum < target:
+      if end == len(numberList):
+        start -= 1
+        break
+      valueSum += numberList[end]
+      end += 1
+    
+  return end - start
+
+if __name__ == "__main__":
+  N, S = map(int, input().rstrip().split())
+  numberList = list(map(int, input().rstrip().split()))
+
+  result = twoPointer(numberList, S)
+  print(result)
 ```
 
 # 소수의 연속합
