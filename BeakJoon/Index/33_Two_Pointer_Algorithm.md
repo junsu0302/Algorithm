@@ -133,11 +133,89 @@ if __name__ == "__main__":
 # 소수의 연속합
 `Gold 3` `1644`
 ```python
+from sys import stdin
+input = stdin.readline
 
+def getPrimes(N): # 에라토스테네스의 
+    isPrime = [True for _ in range(N+1)]
+    for i in range(3, int(N**0.5) + 1, 2):
+        if isPrime[i]:
+            isPrime[i*i :: 2*i] = [False] * ((N - i * i) // (2 * i) + 1)
+    return [2] + [i for i in range(3, N+1, 2) if isPrime[i]]
+
+def twoPointer(numberList, target):
+  start, end = 0, 0
+  valueSum = 0
+  count = 0
+
+  while True:
+    if valueSum < target:
+      if end == len(numberList):
+        break
+      valueSum += numberList[end]
+      end += 1
+    elif valueSum > target:
+      valueSum -= numberList[start]
+      start += 1
+    else:
+      count += 1
+      valueSum -= numberList[start]
+      start += 1
+
+  return count
+
+if __name__ == "__main__":
+  N = int(input())
+  primeList = getPrimes(N)
+
+  result = twoPointer(primeList, N)
+  print(result)
 ```
 
 # 냅색문제
 `Gold 1` `1450`
 ```python
+from sys import stdin
+from bisect import bisect_left
+input = stdin.readline
 
+def meetInTheMiddle(numberList, target):
+  """
+  Meet in the Middle Algorithm
+  1. 주어진 입력 공간을 두 부분으로 분할
+  2. 각 부분에 대해 가능한 모든 상태를 계산하고 저장
+  3. 두 부분에서 얻은 결과를 조합하여 최종 결과 도출
+  """
+  N = len(numberList)
+  AList = numberList[:N//2]
+  BList = numberList[N//2:]
+  
+  ASum = bruteforce(AList, N, target)
+  BSum = bruteforce(BList, N, target)
+  BSum.sort() # binary Search를 위해 정렬
+
+  count = 0
+  for idx in ASum:
+    if target - idx >= 0:
+      count += bisect_left(BSum, target-idx+1) # binarySearch 후 index 반환
+
+  return count
+
+def bruteforce(numberList, N, target):
+  result = [0]
+  for idx in numberList:
+    tmp = []
+    for rst in result:
+      if idx + rst <= target:
+        tmp.append(idx+rst)
+    result += tmp
+    
+  return result
+
+if __name__ == "__main__":
+  N, C = map(int, input().rstrip().split())
+  weightList = list(map(int, input().rstrip().split()))
+
+  result = meetInTheMiddle(weightList, C)
+  print(result)
 ```
