@@ -20,7 +20,6 @@ from collections import deque
 input = stdin.readline
 
 def BFS(start):
-  visited = set()
   queue = deque()
   queue.append([start])
   prevNodes = {}
@@ -32,19 +31,16 @@ def BFS(start):
     if nowNode == 1:
       return backtracking(prevNodes, nowNode)
 
-    if nowNode % 3 == 0 and (nowNode // 3) not in visited:
+    if nowNode % 3 == 0 and (nowNode // 3) not in prevNodes:
       queue.append(path + [nowNode // 3])
-      visited.add(nowNode // 3)
       prevNodes[nowNode // 3] = nowNode
 
-    if nowNode % 2 == 0 and (nowNode // 2) not in visited:
+    if nowNode % 2 == 0 and (nowNode // 2) not in prevNodes:
       queue.append(path + [nowNode // 2])
-      visited.add(nowNode // 2)
       prevNodes[nowNode // 2] = nowNode
 
-    if (nowNode - 1) not in visited:
+    if (nowNode - 1) not in prevNodes:
       queue.append(path + [nowNode - 1])
-      visited.add(nowNode - 1)
       prevNodes[nowNode - 1] = nowNode 
 
 def backtracking(prevArr, target):
