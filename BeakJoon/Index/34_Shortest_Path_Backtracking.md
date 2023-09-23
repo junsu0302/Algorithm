@@ -63,7 +63,7 @@ if __name__ == "__main__":
 # 가장 긴 증가하는 부분 수열 4
 `Gold 4` `14002`
 ```python
-
+from sys import stdin
 ```
 
 # 가장 긴 증가하는 부분 수열 5
