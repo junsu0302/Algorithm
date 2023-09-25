@@ -104,7 +104,42 @@ if __name__ == "__main__":
 # 가장 긴 증가하는 부분 수열 5
 `Platinum 5` `14003`
 ```python
+from sys import stdin
+from bisect import bisect_left
 
+input = stdin.readline
+
+def LIS(start, numberList):
+  memorize = [numberList[start]]
+  valueToIndex = [(memorize[0], start)] # (value, index)
+
+  for target in numberList:
+    if memorize[-1] < target:
+      memorize.append(target)
+      valueToIndex.append((target, len(memorize)-1))
+    else:
+      idx = bisect_left(memorize, target)
+      memorize[idx] = target
+      valueToIndex.append((target, idx))
+    
+  return backtracking(valueToIndex, len(memorize)-1)
+
+def backtracking(prevArr, check):
+  backtrackingPath = []
+  for i in range(len(prevArr)-1, -1, -1):
+    if prevArr[i][1] == check:
+      backtrackingPath.append(prevArr[i][0])
+      check -= 1
+
+  return len(backtrackingPath), backtrackingPath
+
+if __name__ == "__main__":
+  N = int(input())
+  numberList = list(map(int, input().rstrip().split()))
+
+  length, resultList = LIS(0, numberList)
+  print(length)
+  print(*reversed(resultList))
 ```
 
 # LCS 2
