@@ -63,7 +63,44 @@ if __name__ == "__main__":
 # 가장 긴 증가하는 부분 수열 4
 `Gold 4` `14002`
 ```python
+from sys import stdin
+from collections import deque
+from bisect import bisect_left
 
+input = stdin.readline
+
+def LIS(start, numberList):
+  memorize = [numberList[start]]
+  valueToIndex = [(memorize[0], start)] # (value, index)
+
+  for target in numberList:
+    if memorize[-1] < target:
+      memorize.append(target)
+      valueToIndex.append((target, len(memorize)-1))
+    else:
+      idx = bisect_left(memorize, target)
+      memorize[idx] = target
+      valueToIndex.append((target, idx))
+    
+  return backtracking(valueToIndex)
+
+def backtracking(prevArr):
+  backtrackingPath = deque()
+  for i in range(len(prevArr)-1, -1, -1):
+    for idx in range(len(prevArr)):
+      if prevArr[idx][1] == i:
+        backtrackingPath.appendleft(prevArr[idx][0])
+        break
+
+  return len(backtrackingPath), backtrackingPath
+
+if __name__ == "__main__":
+  N = int(input())
+  numberList = list(map(int, input().rstrip().split()))
+
+  length, resultList = LIS(0, numberList)
+  print(length)
+  print(*resultList)
 ```
 
 # 가장 긴 증가하는 부분 수열 5
