@@ -145,7 +145,40 @@ if __name__ == "__main__":
 # LCS 2
 `Gold 4` `9252`
 ```python
+from sys import stdin
 
+input = stdin.readline
+
+def LCS(strA, strB):
+  memorize = [[] for _ in range(len(strA))]
+  
+  count = 0
+  for i in range(len(strB)):
+    tmp = ''
+    for j in range(len(strA)):
+      if len(tmp) >= len(memorize[j]):
+        if strB[i] == strA[j]:
+          if len(memorize[j]) < len(tmp + strA[j]):
+            memorize[j] = tmp + strA[j]
+      else:
+        tmp = memorize[j]
+
+  result = ''
+  for i in range(len(memorize)):
+    if count < len(memorize[i]):
+      count = len(memorize[i])
+      result = memorize[i]
+
+  return count, result
+  
+
+if __name__ == "__main__":
+  AString = list(map(str, input().rstrip()))
+  BString = list(map(str, input().rstrip()))
+
+  count, result = LCS(AString, BString)
+  print(count)
+  print(result)
 ```
 
 # 경찰차
