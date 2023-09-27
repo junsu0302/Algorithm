@@ -150,35 +150,38 @@ from sys import stdin
 input = stdin.readline
 
 def LCS(strA, strB):
-  memorize = [[] for _ in range(len(strA))]
-  
-  count = 0
-  for i in range(len(strB)):
-    tmp = ''
-    for j in range(len(strA)):
-      if len(tmp) >= len(memorize[j]):
-        if strB[i] == strA[j]:
-          if len(memorize[j]) < len(tmp + strA[j]):
-            memorize[j] = tmp + strA[j]
+  memorize = [[0 for _ in range(len(strB)+1)] for _ in range(len(strA)+1)]
+
+  for i in range(1, len(strA)+1):
+    for j in range(1, len(strB)+1):
+      if strA[i-1] == strB[j-1]:
+        memorize[i][j] = memorize[i-1][j-1] + 1
       else:
-        tmp = memorize[j]
+        memorize[i][j] = max(memorize[i-1][j], memorize[i][j-1])
 
-  result = ''
-  for i in range(len(memorize)):
-    if count < len(memorize[i]):
-      count = len(memorize[i])
-      result = memorize[i]
+  return memorize[len(strA)][len(strB)], backtracking(memorize, len(strB), len(strA), strA)
 
-  return count, result
-  
+def backtracking(prevArr, x, y, original):
+  backtrackingPath = []
+  while x>0 and y>0:
+    if prevArr[y][x-1] == prevArr[y][x]:
+      x -= 1
+    elif prevArr[y-1][x] == prevArr[y][x]:
+      y -= 1
+    else:
+      backtrackingPath.append(original[y-1])
+      x -= 1
+      y -= 1
+    
+  return reversed(backtrackingPath)
 
 if __name__ == "__main__":
   AString = list(map(str, input().rstrip()))
   BString = list(map(str, input().rstrip()))
-
+  
   count, result = LCS(AString, BString)
   print(count)
-  print(result)
+  print(''.join(result))
 ```
 
 # 경찰차
