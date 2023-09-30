@@ -187,7 +187,7 @@ if __name__ == "__main__":
 # 경찰차
 `Platinum 4` `2618`
 ```python
-
+from sys import stdin
 ```
 
 # 숨바꼭질 4
