@@ -193,7 +193,50 @@ if __name__ == "__main__":
 # 트리 순회
 `Silver 1` `1991`
 ```Python
+from sys import stdin
 
+input = stdin.readline
+
+class BinaryTree():
+  def __init__(self, size):
+    self.size = size
+    self.tree = {}
+
+  def makeTree(self):
+    for _ in range(self.size):
+      node, left, right = map(str, input().rstrip().split())
+      self.tree[node] = [left, right]
+    
+  def preorder(self, root):
+    if root != '.':
+      print(root, end='')
+      self.preorder(self.tree[root][0])
+      self.preorder(self.tree[root][1])
+      
+  def inorder(self, root): 
+    if root != '.':
+      self.inorder(self.tree[root][0])
+      print(root, end='')
+      self.inorder(self.tree[root][1])
+  
+  def postorder(self, root):
+    if root != '.':
+      self.postorder(self.tree[root][0])
+      self.postorder(self.tree[root][1])
+      print(root, end='')
+
+  def solution(self):
+    self.preorder('A')
+    print()
+    self.inorder('A')
+    print()
+    self.postorder('A')
+
+if __name__ == "__main__":
+  N = int(input())
+  binarytree = BinaryTree(N)
+  binarytree.makeTree()
+  binarytree.solution()
 ```
 
 # 트리의 순회
