@@ -22,19 +22,172 @@
 # 트리의 부모 찾기
 `Silver 2` `11725`
 ```Python
+# 트리의 부모를 찾는 방법의 경우 DFS가 적합하다.
+from sys import stdin
 
+input = stdin.readline
+
+class Tree():
+  def __init__(self, size):
+    self.size = size
+    self.tree = [[] for _ in range(size+1)]
+    self.visited = [0 for _ in range(size+1)]
+    self.parents = [0 for _ in range(size+1)]
+
+  def makeTree(self):
+    for _ in range(self.size-1):
+      u, v = map(int, input().rstrip().split())
+      self.tree[u].append(v)
+      self.tree[v].append(u)
+    
+  def DFS(self, start):
+    stack = [start]
+
+    while stack:
+      nowNode = stack.pop()
+
+      if self.visited[nowNode] == 1:
+        continue
+
+      self.visited[nowNode] = 1
+      for nextNode in self.tree[nowNode]:
+        if self.visited[nextNode] == 0:
+          stack.append(nextNode)
+          self.parents[nextNode] = nowNode
+
+  def solution(self):
+    self.DFS(1)
+    print('\n'.join(map(str, self.parents[2:])))
+
+if __name__ == "__main__":
+  N = int(input())
+  tree = Tree(N)
+  tree.makeTree()
+  tree.solution()
 ```
 
 # 트리의 지름
 `Gold 2` `1167`
 ```Python
+# 트리의 지름을 구하는 경우 DFS가 적합하다.
+from sys import stdin
 
+input = stdin.readline
+
+class Tree():
+  def __init__(self, size):
+    self.size = size
+    self.tree = [[] for _ in range(size+1)]
+    self.visited = [0 for _ in range(size+1)]
+    self.distance = [0 for _ in range(size+1)]
+
+  def makeTree(self):
+    for _ in range(self.size):
+      u, *data = map(int, input().rstrip().split()[:-1])
+      for i in range(0, len(data), 2):
+        v, w = data[i], data[i+1]
+        self.tree[u].append((v,w))
+
+  def DFS(self, start):
+    stack = [start]
+    while stack:
+      nowNode = stack.pop()
+
+      if self.visited[nowNode] == 1:
+        continue
+
+      self.visited[nowNode] = 1
+      for nextNode, nextWeight in self.tree[nowNode]:
+        if self.visited[nextNode] == 0:
+          stack.append(nextNode)
+          self.distance[nextNode] = self.distance[nowNode] + nextWeight
+
+  def findMax(self):
+    maxValue, index = 0, 0
+    for idx, value in enumerate(self.distance):
+      if maxValue < value:
+        maxValue = value
+        index = idx
+
+    return maxValue, index
+
+  def solution(self):
+    self.DFS(1)
+    _ , node = self.findMax()
+
+    self.visited = [0 for _ in range(self.size+1)]
+    self.distance = [0 for _ in range(self.size+1)]
+    self.DFS(node)
+    value, _ = self.findMax()
+
+    print(value)
+  
+if __name__ == "__main__":
+  N = int(input())
+  tree = Tree(N)
+  tree.makeTree()
+  tree.solution()
 ```
 
 # 트리의 지름
 `Gold 4` `1967`
 ```Python
+from sys import stdin
 
+input = stdin.readline
+
+class Tree():
+  def __init__(self, size):
+    self.size = size
+    self.tree = [[] for _ in range(size+1)]
+    self.visited = [0 for _ in range(size+1)]
+    self.distance = [0 for _ in range(size+1)]
+
+  def makeTree(self):
+    for _ in range(self.size-1):
+      u, v, w = map(int, input().rstrip().split())
+      self.tree[u].append((v, w))
+      self.tree[v].append((u, w))
+
+  def DFS(self, start):
+    stack = [start]
+    while stack:
+      nowNode = stack.pop()
+
+      if self.visited[nowNode] == 1:
+        continue
+
+      self.visited[nowNode] = 1
+      for nextNode, nextWeight in self.tree[nowNode]:
+        if self.visited[nextNode] == 0:
+          stack.append(nextNode)
+          self.distance[nextNode] = self.distance[nowNode] + nextWeight
+
+  def findMax(self):
+    maxValue, index = 0, 0
+    for idx, value in enumerate(self.distance):
+      if maxValue < value:
+        maxValue = value
+        index = idx
+
+    return maxValue, index
+
+  def solution(self):
+    self.DFS(1)
+    _ , node = self.findMax()
+
+    self.visited = [0 for _ in range(self.size+1)]
+    self.distance = [0 for _ in range(self.size+1)]
+    self.DFS(node)
+    value, _ = self.findMax()
+
+    print(value)
+  
+if __name__ == "__main__":
+  N = int(input())
+  tree = Tree(N)
+  tree.makeTree()
+  tree.solution()
 ```
 
 # 트리 순회
