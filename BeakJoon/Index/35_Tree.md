@@ -207,19 +207,19 @@ class BinaryTree():
       node, left, right = map(str, input().rstrip().split())
       self.tree[node] = [left, right]
     
-  def preorder(self, root):
+  def preorder(self, root): # 전위 순회 : root -> left -> right
     if root != '.':
       print(root, end='')
       self.preorder(self.tree[root][0])
       self.preorder(self.tree[root][1])
       
-  def inorder(self, root): 
+  def inorder(self, root): # 중위 순회 : left -> root -> right
     if root != '.':
       self.inorder(self.tree[root][0])
       print(root, end='')
       self.inorder(self.tree[root][1])
   
-  def postorder(self, root):
+  def postorder(self, root): # 후위 순회 : left -> right -> root
     if root != '.':
       self.postorder(self.tree[root][0])
       self.postorder(self.tree[root][1])
@@ -242,17 +242,183 @@ if __name__ == "__main__":
 # 트리의 순회
 `Gold 1` `2263`
 ```Python
+import sys
+sys.setrecursionlimit(10**6)
+input = sys.stdin.readline
 
+# pre, in, post order 의 순회 정리
+# pre order : 부모, 왼쪽 자식, 오른쪽 자식
+# in order : 왼쪽 자식, 부모, 오른쪽 자식
+# post order : 왼쪽 자식, 오른쪽 자식, 부모
+
+# 특정 노드를 루트 노드로 가지는 부분 트리가 존재한다면
+# pre, in, post order 배열은 각 order 안의 부분 트리의 위치만 다를 뿐, 해당 부분 트리의 노드들이 붙어있는 구조를 가지고 있다
+# 즉 각 order 배열을 인덱싱하여 부분 트리를 뽑아낼 수 있다
+
+# 인덱싱 된 post order 배열의 마지막 노드는 해당 부분 트리의 루트 노드이다
+# 인덱싱 된 in order 의 루트 노드는 자식 노드의 부분 트리 사이에 위치한다
+# post order 에서 가져온 루트 노드를 in order 에서 찾으면 왼쪽 부분 트리 / 루트 노드 / 오른쪽 부분 트리 의 관계를 찾을 수 있다
+
+def slicing(start, end, in_w, pre_w):
+  # 예외처리
+  if start > end or start < 0 or end < 0:
+    return
+
+  # post order 의 마지막 노드는 루트 노드
+  root = post_order[end]
+  # 해당 루트 노드를 pre order 배열에 넣는다
+  # pre_w: post order 기준 pre order 에서 부분 트리가 밀린 횟수
+  pre_order[start+pre_w] = str(root)
+
+  # 부분 트리가 노드 1개밖에 없다면 종료
+  if start == end:
+    return
+
+  # pre order 와 in order 의 끝 노드가 같다면, 해당 부분 트리는 오른쪽 자식이 없다
+  if root == in_order[end + in_w]:
+    # 왼쪽 자식을 재귀 호출할 시 in order 부분 트리는 밀리지 않지만 pre order 부분 트리는 한 칸 밀리므로 pre_w 에 +1
+    slicing(start, end - 1, in_w, pre_w + 1)
+    return
+
+  # pre order 의 끝 노드가 in order 의 시작 노드와 같다면, 해당 부분 트리는 왼쪽 자식이 없다
+  if root == in_order[start + in_w]:
+    # 오른쪽 자식을 재귀 호출할 시 in oder, pre order 부분 트리 모두 한 칸씩 밀리므로 in_w, pre_w 에 각각 +1
+    slicing(start, end - 1, in_w + 1, pre_w + 1)
+    return
+
+  # in order 를 이용하여 트리 구조를 찾음
+  root_idx = -1
+  for idx in range(end-1, start, -1):
+    if in_order[idx + in_w] == root: # 루트 노드를 찾으면 해당 인덱스를 받고 탈출
+      root_idx = idx
+      break
+
+  # 왼쪽 자식 부분 트리, 오른쪽 자식 부분 트리에 대해 재귀 호출
+  slicing(start, root_idx - 1, in_w, pre_w + 1)
+  slicing(root_idx, end - 1, in_w + 1, pre_w + 1)
+
+if __name__ == "__main__":
+  n = int(input())
+
+  in_order = list(map(int, input().split()))
+  post_order = list(map(int, input().split()))
+  pre_order = ["" for _ in range(n)]
+
+  slicing(0, n - 1, 0, 0)     # pre_order 구성
+  print(" ".join(pre_order))
 ```
 
 # 이진 검색 트리
 `Gold 5` `5639`
 ```Python
+from sys import stdin
 
+input = stdin.readline
+
+class binarySearchTree():
+  def __init__(self, root):
+    self.root = root
+    self.tree = {}
+
+  def makeTree(self):
+    self.tree[self.root] = [-1, -1]
+    while True:
+      node = str(input().rstrip())
+      if node == '':
+        break
+
+      node = int(node)
+      comparison = self.root
+      while True:
+        if comparison < node:
+          if self.tree[comparison][1] == -1:
+            self.tree[comparison][1] = node
+            self.tree[node] = [-1, -1]
+            break
+          comparison = self.tree[comparison][1]
+
+        if node < comparison:
+          if self.tree[comparison][0] == -1:
+            self.tree[comparison][0] = node
+            self.tree[node] = [-1, -1]
+            break
+          comparison = self.tree[comparison][0]
+
+  def postorder(self, root):
+    if root != -1:
+      self.postorder(self.tree[root][0])
+      self.postorder(self.tree[root][1])
+      print(root)
+
+  def solution(self):
+    self.postorder(self.root)
+
+if __name__ == "__main__":
+  root = int(input().rstrip())
+  tree = binarySearchTree(root)
+  tree.makeTree()
+  tree.solution()
 ```
 
 # 트리
 `Gold 4` `4803`
 ```Python
+from sys import stdin
 
+input = stdin.readline
+
+class Graph():
+  def __init__(self, nodes, edges):
+    self.nodes = nodes
+    self.edges = edges
+    self.graph = {}
+    for i in range(1, nodes+1):
+      self.graph[i] = i
+
+  def makeGraph(self):
+    for i in range(1, self.nodes+1):
+      self.graph[i] = i
+      
+    for _ in range(self.edges):
+      u, v = map(int, input().rstrip().split())
+      if self.graph[u] == u:
+        self.graph[u] = v
+      else:
+        self.graph[v] = u
+        
+  def findTree(self):
+    count = 0
+    node = 1
+    while True:
+      if node == self.nodes:
+        if self.graph[node] == node:
+          count += 1
+          break
+        else:
+          break
+      
+      if self.graph[node] == node:
+        count += 1
+        node +=1
+      else:
+        node +=1
+
+    return count
+  
+  def solution(self):
+    self.makeGraph()
+    result = self.findTree()
+    if result == 0:
+      print('No trees.')
+    elif result == 1:
+      print('There is one tree.')
+    elif result > 1:
+      print(f'A forest of {result} trees.')
+
+if __name__ == "__main__":
+  while True:
+    N, M = map(int, input().rstrip().split())
+    if N != 0 and M != 0:
+      graph = Graph(N, M)
+      graph.solution()
 ```
