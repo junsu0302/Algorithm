@@ -27,7 +27,7 @@ from sys import stdin
 
 input = stdin.readline
 
-class Tree():
+class Tree:
   def __init__(self, size):
     self.size = size
     self.tree = [[] for _ in range(size+1)]
@@ -74,7 +74,7 @@ from sys import stdin
 
 input = stdin.readline
 
-class Tree():
+class Tree:
   def __init__(self, size):
     self.size = size
     self.tree = [[] for _ in range(size+1)]
@@ -136,7 +136,7 @@ from sys import stdin
 
 input = stdin.readline
 
-class Tree():
+class Tree:
   def __init__(self, size):
     self.size = size
     self.tree = [[] for _ in range(size+1)]
@@ -197,7 +197,7 @@ from sys import stdin
 
 input = stdin.readline
 
-class BinaryTree():
+class BinaryTree:
   def __init__(self, size):
     self.size = size
     self.tree = {}
@@ -315,7 +315,7 @@ from sys import stdin
 
 input = stdin.readline
 
-class binarySearchTree():
+class binarySearchTree:
   def __init__(self, root):
     self.root = root
     self.tree = {}
@@ -367,7 +367,7 @@ from sys import stdin
 
 input = stdin.readline
 
-class Graph():
+class Graph:
   def __init__(self, nodes, edges):
     self.nodes = nodes
     self.edges = edges
