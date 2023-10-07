@@ -30,7 +30,7 @@
 # 집합의 표현
 `Gold 5` `1717`
 ```python
-# 정석적인 풀이
+# 정석 풀이
 from sys import stdin
 
 input = stdin.readline
