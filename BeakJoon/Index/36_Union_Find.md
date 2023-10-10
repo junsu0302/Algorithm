@@ -133,7 +133,54 @@ if __name__ == "__main__":
 # 여행 가자
 `Gold 4` `1976`
 ```python
+from sys import stdin
 
+input = stdin.readline
+
+class UnionFind:
+  def __init__(self, size):
+    self.parent = [-1 for _ in range(size+1)]
+
+  def find(self, x):
+    if self.parent[x] < 0:
+      return x
+    self.parent[x] = self.find(self.parent[x])
+    return self.parent[x]
+
+  def union(self, x, y):
+    if self.parent[x] > self.parent[y]:
+      self.parent[x] = y
+    else:
+      if self.parent[x] == self.parent[y]:
+        self.parent[x] -= 1
+      self.parent[y] = x
+
+  def solution(self, cnt):
+    for i in range(1, cnt+1):
+      row = list(map(int, input().rstrip().split()))
+      for j in range(len(row)):
+        if row[j] == 1:
+          rootA, rootB = self.find(i), self.find(j+1)
+          if rootA != rootB:
+            self.union(rootA, rootB)
+
+    target = list(map(int, input().rstrip().split()))
+    comparison = self.find(target[0])
+    result = 'YES'
+    for idx in target:
+      tmp = self.find(idx)
+      if tmp != comparison:
+        result = 'NO'
+        break
+      else:
+        continue
+    print(result)
+
+if __name__ == "__main__":
+  N = int(input())
+  M = int(input())
+  uf = UnionFind(N)
+  uf.solution(N)
 ```
 
 # 친구 네트워크
