@@ -186,11 +186,112 @@ if __name__ == "__main__":
 # 친구 네트워크
 `Gold 2` `4195`
 ```python
+from sys import stdin
 
+input = stdin.readline
+
+class UnionFind:
+  def __init__(self, size):
+    self.size = size
+    self.parent = [-1 for _ in range(size*2)]
+    self.nameIndex = {}
+
+  def find(self, x):
+    if self.parent[x] < 0:
+      return x
+    self.parent[x] = self.find(self.parent[x])
+    return self.parent[x]
+
+  def union(self, x, y):
+    if self.parent[x] > self.parent[y]:
+      self.parent[x] = y
+    else:
+      if self.parent[x] == self.parent[y]:
+        self.parent[x] -= 1
+      self.parent[y] = x
+
+  def nameToIndex(self, x):
+    if not x in self.nameIndex:
+      self.nameIndex[x] = len(self.nameIndex)+1
+    return self.nameIndex[x]
+
+  def checkMaxSize(self):
+    minIndex = self.parent.index(min(self.parent))
+    count = 0
+    for i in range(len(self.parent)):
+      if self.find(minIndex) == self.find(i):
+        count += 1
+
+    return count
+  
+  def solution(self):
+    for _ in range(self.size):
+      elementA, elementB = map(str, input().rstrip().split())
+      elementA, elementB = self.nameToIndex(elementA), self.nameToIndex(elementB)
+      rootA, rootB = self.find(elementA), self.find(elementB)
+      self.union(rootA, rootB)
+
+      result = self.checkMaxSize()
+      print(result)     
+      
+if __name__ == "__main__":
+  T = int(input())
+  for _ in range(T):
+    F = int(input())
+    uf = UnionFind(F)
+    uf.solution()
 ```
 
 # 사이클 게임
 `Gold 4` `20040`
 ```python
+from sys import stdin
 
+input = stdin.readline
+
+class UnionFind:
+  def __init__(self, size):
+    self.size = size
+    self.parent = {}
+
+  def find(self, x):
+    if self.parent[x] < 0:
+      return x
+    self.parent[x] = self.find(self.parent[x])
+    return self.parent[x]
+
+  def union(self, x, y):
+    if self.parent[x] > self.parent[y]:
+      self.parent[x] = y
+    else:
+      if self.parent[x] == self.parent[y]:
+        self.parent[x] -= 1
+      self.parent[y] = x
+
+  def makeGraph(self, u, v):
+    if u not in self.parent:
+      self.parent[u] = -1
+    if v not in self.parent:
+      self.parent[v] = -1
+  
+  def solution(self, cnt):
+    count = 0
+    for i in range(cnt):
+      u, v = map(int, input().rstrip().split())
+      self.makeGraph(u, v)
+      rootU, rootV = self.find(u), self.find(v)
+      self.union(rootU, rootV)
+
+      if all(value >= 0 for value in self.parent.values()):
+        count = i + 1
+      
+    if count != 0:
+      print(count)
+    else:
+      print(0)
+      
+if __name__ == "__main__":
+  N, M = map(int, input().rstrip().split())
+  uf = UnionFind(N)
+  uf.solution(M)
 ```
