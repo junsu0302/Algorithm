@@ -31,7 +31,66 @@ MST 알고리즘들을 구현하는 방법은 다음과 같다.
 # 상근이의 여행
 `Silver 4` `9372`
 ```python
+from sys import stdin
+from collections import deque
 
+input = stdin.readline
+
+class Graph:
+  def __init__(self, size):
+    self.size = size
+    self.graph = {}
+    self.visited = {}
+
+  def makeGraph(self, u, v):
+    if u not in self.graph:
+      self.graph[u] = [v]
+      self.visited[u] = 0
+    else:
+      if v not in self.graph[u]:
+        self.graph[u].append(v)
+
+    if v not in self.graph:
+      self.graph[v] = [u]
+      self.visited[v] = 0
+    else:
+      if u not in self.graph[v]:
+        self.graph[v].append(u)
+
+  def BFS(self, start):
+    path = [] 
+    queue = deque([start])
+    
+    self.visited[start] = 1
+    path.append(start)
+    count = 0
+  
+    while queue:
+      node = queue.popleft()
+  
+      for nextNode in self.graph[node]:
+        if self.visited[nextNode] == 0:
+          queue.append(nextNode)
+          path.append(nextNode)
+          self.visited[nextNode] = 1
+          count += 1
+  
+    return count
+  
+  def solution(self, cnt):
+    for _ in range(cnt):
+      u, v = map(int, input().rstrip().split())
+      self.makeGraph(u, v)
+
+    result = self.BFS(1)
+    print(result)
+      
+if __name__ == "__main__":
+  T = int(input())
+  for _ in range(T):
+    N, M = map(int, input().rstrip().split())
+    uf = Graph(N)
+    uf.solution(M)
 ```
 
 # 최소 스패닝 트리
