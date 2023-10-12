@@ -96,7 +96,58 @@ if __name__ == "__main__":
 # 최소 스패닝 트리
 `Gold 4` `1197`
 ```python
+from sys import stdin
 
+input = stdin.readline
+
+class kruckalMST:
+  def __init__(self, size):
+    self.size = size
+    self.mst = []
+    self.graph = []
+    self.parent = {}
+
+  def find(self, x):
+    if self.parent[x] < 0:
+      return x
+    self.parent[x] = self.find(self.parent[x])
+    return self.parent[x]
+
+  def union(self, x, y):
+    if self.parent[x] > self.parent[y]:
+      self.parent[x] = y
+    else:
+      if self.parent[x] == self.parent[y]:
+        self.parent[x] -= 1
+      self.parent[y] = x
+
+  def kruckal(self):
+    graph = sorted(self.graph, key=lambda x: x[2])
+
+    for u, v, weight in graph:
+      rootU, rootV = self.find(u), self.find(v)
+      if rootU != rootV:
+        self.mst.append((u, v, weight))
+        self.union(rootU, rootV)
+  
+  def solution(self, cnt):
+    for _ in range(cnt):
+      u, v, weight = list(map(int, input().rstrip().split()))
+      self.graph.append([u, v, weight])
+      self.parent[u] = -1
+      self.parent[v] = -1
+
+    self.kruckal()
+
+    result = 0
+    for _, _, weight in self.mst:
+      result += weight
+    print(result)
+      
+if __name__ == "__main__":
+  V, E = map(int, input().rstrip().split())
+  mst = kruckalMST(V)
+  mst.solution(E)
 ```
 
 # 별자리 만들기
