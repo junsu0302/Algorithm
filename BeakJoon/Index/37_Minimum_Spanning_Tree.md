@@ -153,7 +153,73 @@ if __name__ == "__main__":
 # 별자리 만들기
 `Gold 3` `4386`
 ```python
+from sys import stdin
+from math import sqrt
 
+input = stdin.readline
+
+class kruskalMST:
+  def __init__(self):
+    self.mst = []
+    self.graph = []
+    self.parent = {}
+    self.coordinate = {}
+
+  def find(self, x):
+    if self.parent[x] < 0:
+      return x
+    self.parent[x] = self.find(self.parent[x])
+    return self.parent[x]
+
+  def union(self, x, y):
+    if self.parent[x] > self.parent[y]:
+      self.parent[x] = y
+    else:
+      if self.parent[x] == self.parent[y]:
+        self.parent[x] -= 1
+      self.parent[y] = x
+
+  def kruskal(self):
+    graph = sorted(self.graph, key=lambda x: x[2])
+
+    for u, v, weight in graph:
+      rootU, rootV = self.find(u), self.find(v)
+      if rootU != rootV:
+        self.mst.append((u, v, weight))
+        self.union(rootU, rootV)
+
+  def makeGraph(self):
+    for u in range(len(self.coordinate)):
+      for v in range(len(self.coordinate)):
+        if u == v:
+          continue
+        x1, y1 = self.coordinate[u]
+        x2, y2 = self.coordinate[v]
+        distance = sqrt((x2 - x1)**2 + (y2 - y1)**2)
+
+        self.graph.append((u, v, distance))
+        if u not in self.parent:
+          self.parent[u] = -1
+        if v not in self.parent:
+          self.parent[v] = -1
+
+  def solution(self, cnt):
+    for i in range(cnt):
+      x, y = map(float, input().rstrip().split())
+      self.coordinate[i] = (x, y)
+      
+    self.makeGraph()
+    self.kruskal()
+
+    result = 0
+    for _, _, weight in self.mst:
+      result += weight
+    print(round(result, 2))
+
+if __name__ == "__main__":
+  N = int(input())
+  mst = kruskalMST()
+  mst.solution(N)
 ```
 
 # 우주신과의 교감
