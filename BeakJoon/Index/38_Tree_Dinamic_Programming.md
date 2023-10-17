@@ -17,7 +17,46 @@ Tree DP의 종류는 다음과 같다.
 # 트리와 쿼리
 `Gold 5` `15681`
 ```python
+from sys import stdin, setrecursionlimit
+setrecursionlimit(10**6)
+input = stdin.readline
 
+class Tree:
+  def __init__(self, root):
+    self.root = root
+    self.graph = {}
+    self.subtree = {}
+
+  def addEdge(self, u, v):
+    if u not in self.graph:
+      self.graph[u] = [v]
+      self.subtree[u] = 0
+    else:
+      self.graph[u].append(v)
+
+  def getSubTree(self, root):
+    self.subtree[root] = 1
+    for children in self.graph[root]:
+      if self.subtree[children] == 0:
+        self.subtree[root] += self.getSubTree(children)
+    return self.subtree[root]
+
+  def solution(self, treeCnt, printCnt):
+    for _ in range(treeCnt):
+      u, v = map(int, input().split())
+      self.addEdge(u, v)
+      self.addEdge(v, u)
+
+    self.getSubTree(self.root)
+
+    for _ in range(printCnt):
+      root = int(input())
+      print(self.subtree[root])
+
+if __name__ == "__main__":
+  N, R, Q = map(int, input().rstrip().split())
+  tree = Tree(R)
+  tree.solution(N-1, Q)
 ```
 
 # 트리의 독립집합
