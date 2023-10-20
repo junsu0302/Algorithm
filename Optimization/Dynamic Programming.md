@@ -1,4 +1,12 @@
-다이나믹 프로그래밍에서 많이 사용되는 최적화 기법에 대해서 알아보자
+# Dinamic Programming
+
+https://zzonglove.tistory.com/13
+
+Dinamic Programming은 다항한 시간안에 특정 문제를 풀기위한 기술이다. DP는 다음과 같은 단계를 거친다.
+1. DP가 사용 가능한 문제인지 확인
+2. 최소 매개변수를 이용해 어떻게 상태를 표현할지 결정
+3. 상태 관계를 수식화
+4. 도표 작성 (Memorization 추가)
 
 https://koosaga.com/242
 
