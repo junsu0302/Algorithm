@@ -26,7 +26,60 @@
 # 찾기
 `Platinum 5` `1786`
 ```python
+from sys import stdin
 
+input = stdin.readline
+
+class StringAlgorithm:
+  def __init__(self):
+    None
+
+  def LPS(self, pattern): # KMP 알고리즘을 위해 패턴 탐색
+    # Longest Prefix Suffix (투 포인터 활용)
+    table = [0 for _ in range(len(pattern))]
+  
+    rignt = 0
+    for left in range(1, len(pattern)):
+      while rignt > 0 and pattern[left] != pattern[rignt]:
+        rignt = table[rignt-1]
+  
+      if pattern[left] == pattern[rignt] :
+        rignt += 1
+        table[left] = rignt
+  
+    return table
+  
+  def KMP(self, word, pattern): 
+    table = self.LPS(pattern) # LPS 통해 전처리된 테이블 불러오기
+    results = []
+    count = 0
+  
+    rignt = 0
+    for left in range(len(word)):
+      while rignt > 0 and word[left] != pattern[rignt] :
+        rignt = table[rignt-1]
+      if word[left] == pattern[rignt]:
+        if rignt == len(pattern)-1 :
+          results.append(left-len(pattern)+2)
+          rignt = table[rignt]
+          count += 1
+        else:
+          rignt += 1
+
+    return count, results
+
+  def solution(self, word, pattern):
+    count, result = self.KMP(word, pattern)
+
+    print(count)
+    for element in result:
+      print(element)
+    
+if __name__ == "__main__":
+  T = input().rstrip()
+  P = input().rstrip()
+  kmp = StringAlgorithm()
+  kmp.solution(T, P)
 ```
 
 # 광고
