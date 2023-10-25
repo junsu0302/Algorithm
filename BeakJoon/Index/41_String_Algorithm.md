@@ -85,7 +85,37 @@ if __name__ == "__main__":
 # 광고
 `Platinum 4` `1305`
 ```python
+from sys import stdin
 
+input = stdin.readline
+
+class StringAlgorithm:
+  def __init__(self):
+    None
+
+  def LPS(self, pattern): 
+    PI = [0 for _ in range(len(pattern))]
+  
+    rignt = 0
+    for left in range(1, len(pattern)):
+      while rignt > 0 and pattern[left] != pattern[rignt]:
+        rignt = PI[rignt-1]
+  
+      if pattern[left] == pattern[rignt] :
+        rignt += 1
+        PI[left] = rignt
+  
+    return len(pattern) - PI[-1]
+
+  def solution(self, pattern):
+    result = self.LPS(pattern)
+    print(result)
+    
+if __name__ == "__main__":
+  L = int(input())
+  pattern = input().rstrip()
+  kmp = StringAlgorithm()
+  kmp.solution(pattern)
 ```
 
 # 개미굴
