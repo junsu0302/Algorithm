@@ -66,7 +66,7 @@ class BinaryTree:
       self.tree[node] = [left, right]
 ```
 
-# Binaru Search Tree
+# Binary Search Tree
 ```python
 class binarySearchTree:
   def __init__(self, root):
