@@ -121,7 +121,48 @@ if __name__ == "__main__":
 # 개미굴
 `Gold 3` `14725`
 ```python
+from sys import stdin
 
+input = stdin.readline
+
+class Node:
+  def __init__(self, key, data=None):
+    self.key = key
+    self.data = data
+    self.children = {}
+
+class Trie:
+  def __init__(self):
+    self.root = Node('root')
+
+  def insert(self, word):
+    nowNode = self.root
+    for char in word:
+      if char not in nowNode.children:
+        nowNode.children[char] = Node(char)
+      nowNode = nowNode.children[char]
+    nowNode.data = word
+
+  def get_trie(self, depth, nowNode=None):
+    if depth == 0:
+      nowNode = self.root
+
+    for char in sorted(nowNode.children.keys()):
+      print('--'*depth, char, sep='')
+      self.get_trie(depth+1, nowNode.children[char])
+
+  def solution(self, cnt):
+    for _ in range(cnt):
+      data = list(map(str, input().rstrip().split()))
+      self.insert(data[1:])
+
+    self.get_trie(0)
+      
+
+if __name__ == "__main__":
+  N = int(input())
+  trie = Trie()
+  trie.solution(N)
 ```
 
 # 문자열 집합
@@ -133,5 +174,75 @@ if __name__ == "__main__":
 # 휴대폰 자판
 `Platinum 4` `5670`
 ```python
+from sys import stdin
 
+input = stdin.readline
+
+class Node:
+  def __init__(self, key, data=None, count=0):
+    self.key = key
+    self.data = data
+    self.children = {}
+
+class Trie:
+  def __init__(self):
+    self.root = Node('root')
+
+  def insert(self, word):
+    nowNode = self.root
+    for char in word:
+      if char not in nowNode.children:
+        nowNode.children[char] = Node(char)
+      nowNode = nowNode.children[char]
+    nowNode.data = word
+
+  def search(self, word):
+    nowNode = self.root
+    depth = 0
+    if len(nowNode.children) == 1:
+      depth += 1
+    
+    for char in word:
+      if word == nowNode.data:
+        return depth
+        
+      if char in nowNode.children:
+        if len(nowNode.children) > 1:
+          depth += 1
+        if len(nowNode.children) == 1 and word != nowNode.data and nowNode.data is not None:
+          depth += 1
+          
+        nowNode = nowNode.children[char]
+      else:
+        return False
+
+    if nowNode.data is not None:
+      return depth
+
+  def get_trie(self, depth, nowNode=None):
+    if depth == 0:
+      nowNode = self.root
+
+    for char in sorted(nowNode.children.keys()):
+      print('--'*depth, char, sep='')
+      self.get_trie(depth+1, nowNode.children[char])
+
+  def solution(self, cnt):
+    dataList = []
+    for _ in range(cnt):
+      dataList.append(input().rstrip())
+
+    for data in dataList:
+      self.insert(data)
+
+    result = 0
+    for data in dataList:
+      result += self.search(data)
+    result = round(result / cnt, 2)
+    print(result)
+
+if __name__ == "__main__":
+  N = int(input())
+  trie = Trie()
+  trie.solution(N)
 ```
