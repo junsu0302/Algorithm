@@ -100,5 +100,40 @@ class binarySearchTree:
 
 # Trie
 ```python
+class Node:
+  def __init__(self, key, data=None):
+    self.key = key
+    self.data = data
+    self.children = {}
 
+class Trie:
+  def __init__(self):
+    self.root = Node('root')
+
+  def insert(self, word):
+    nowNode = self.root
+    for char in word:
+      if char not in nowNode.children:
+        nowNode.children[char] = Node(char)
+      nowNode = nowNode.children[char]
+    nowNode.data = word
+
+  def search(self, word):
+    nowNode = self.root
+    for char in word:
+      if char in nowNode.children:
+        nowNode = nowNode.children[char]
+      else:
+        return False
+
+    if nowNode.data is not None:
+      return nowNode.data
+
+  def get_trie(self, depth, nowNode=None):
+    if depth == 0:
+      nowNode = self.root
+
+    for char in sorted(nowNode.children.keys()):
+      print('--'*depth, char, sep='')
+      self.get_trie(depth+1, nowNode.children[char])
 ```
