@@ -12,7 +12,57 @@
 # 줄 세우기
 `Gold 3` `2252`
 ```python
+from sys import stdin
 
+input = stdin.readline
+
+class Graph:
+  def __init__(self, size):
+    self.size = size
+    self.graph = {}
+
+  def add_edge(self, start, end):
+    if start not in self.graph:
+      self.graph[start] = []
+    self.graph[start].append(end)
+
+  def topology_sort(self):
+    result = []
+    indegree = [0 for _ in range(self.size+1)] # 그래프 내에서 특정 노드에 진입하는 방향의 연결 수
+    stack = []
+
+    # 진입 차수 계산
+    for i in range(1, self.size+1):
+      if i in self.graph:
+        for nextNode in self.graph[i]:
+          indegree[nextNode] += 1
+
+    for i in range(1, self.size+1):
+      if indegree[i] == 0:
+        stack.append(i)
+
+    while stack:
+      nowNode = stack.pop()
+      result.append(nowNode)
+
+      if nowNode in self.graph:
+        for nextNode in self.graph[nowNode]:
+          indegree[nextNode] -= 1
+          if indegree[nextNode] == 0:
+            stack.append(nextNode)
+
+    return result
+
+if __name__ == "__main__":
+  N, M = map(int, input().rstrip().split())
+
+  graph = Graph(N)
+
+  for _ in range(M):
+    start, end = map(int, input().rstrip().split())
+    graph.add_edge(start, end)
+
+  print(" ".join(map(str, graph.topology_sort())))
 ```
 
 # 최종 순위
