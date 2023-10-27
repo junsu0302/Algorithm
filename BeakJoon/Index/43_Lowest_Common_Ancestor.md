@@ -11,7 +11,61 @@ LCA의 종류는 다음과 같다.
 # 가장 가까운 공통 조상
 `Gold ` ``
 ```python
+from sys import stdin
 
+input = stdin.readline
+
+class Node:
+  def __init__(self, key):
+    self.key = key
+    #self.depth = None
+    self.parent = None
+    #self.children = []
+
+class Tree:
+  def __init__(self):
+    self.root = None
+    self.tree = {}
+
+  def add_node(self):
+    parent, child = map(int, input().rstrip().split())
+    if parent not in self.tree:
+      self.tree[parent] = Node(parent)
+    if child not in self.tree:
+      self.tree[child] = Node(child)
+    #self.tree[parent].children.append(child)
+    self.tree[child].parent = parent
+
+  def find_parent_list(self, target):
+    result = [target]
+    nowNode = self.tree[target]
+    while True:
+      if nowNode.parent is None:
+        break
+      result.append(nowNode.parent)
+      nowNode = self.tree[nowNode.parent]
+
+    return result
+  
+  def LCA(self):
+    target1, target2 = map(int, input().rstrip().split())
+    parentList1 = self.find_parent_list(target1)
+    parentList2 = self.find_parent_list(target2)
+
+    for target1 in parentList1:
+      for target2 in parentList2:
+        if target1 == target2:
+          return target1
+
+if __name__ == "__main__":
+  T = int(input())
+  for _ in range(T):
+    tree = Tree()
+    N = int(input())
+    for _ in range(N-1):
+      tree.add_node()
+    result = tree.LCA()
+    print(result)
 ```
 
 # 합성합수와 쿼리
