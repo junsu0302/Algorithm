@@ -71,7 +71,45 @@ if __name__ == "__main__":
 # 합성합수와 쿼리
 `Gold ` ``
 ```python
+from sys import stdin
 
+input = stdin.readline
+
+class Tree:
+  def __init__(self):
+    None
+
+  def make_sparse_table(self, f, table_size):
+    row = [x for x in f]
+    table = [row]
+    for _ in range(1, table_size):
+      row = [row[x-1] for x in row]
+      table.append(row)
+
+    return table
+    
+  def LCA(self, data, sparse_table):
+    for n, x in data:
+      current_value = x-1
+      for i, binary_digit in enumerate(reversed(bin(n))):
+        if binary_digit == '1':
+          current_value = sparse_table[i][current_value] - 1
+      result = current_value + 1
+      print(result)
+          
+if __name__ == "__main__":
+  M = int(input())
+  f = list(map(int, input().rstrip().split()))
+  Q = int(input())
+  n_and_x = [list(map(int, input().rstrip().split())) for _ in range(Q)]
+
+  max_n = max(n for n, _ in n_and_x)
+  table_size = max_n.bit_length()
+  
+  tree = Tree()
+  sparse_table = tree.make_sparse_table(f, table_size)
+  for r in sparse_table: print(r)
+  tree.LCA(n_and_x, sparse_table)
 ```
 
 # LCA 2
