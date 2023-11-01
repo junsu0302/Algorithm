@@ -9,7 +9,7 @@ LCA의 종류는 다음과 같다.
   DP를 사용하여 트리의 사전처리를 통해 조상을 기록
 
 # 가장 가까운 공통 조상
-`Gold ` ``
+`Gold 4` `3584`
 ```python
 from sys import stdin
 
@@ -69,7 +69,7 @@ if __name__ == "__main__":
 ```
 
 # 합성합수와 쿼리
-`Gold ` ``
+`Gold 1` `17435`
 ```python
 from sys import stdin
 
@@ -113,19 +113,19 @@ if __name__ == "__main__":
 ```
 
 # LCA 2
-`Platinum ` ``
+`Platinum 5` `11438`
 ```python
 
 ```
 
 # 도로 네트워크
-`Platinum ` ``
+`Platinum 4` `3176`
 ```python
 
 ```
 
-# 트리와 쿼
-`Platinum ` ``
+# 트리와 쿼리
+`Platinum 3` `13511`
 ```python
 
 ```
