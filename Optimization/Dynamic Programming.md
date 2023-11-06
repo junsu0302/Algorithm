@@ -4,7 +4,7 @@ https://zzonglove.tistory.com/13
 
 https://cotak.tistory.com/51
 
-Dinamic Programming은 다항한 시간안에 특정 문제를 풀기위한 기술이다. DP는 다음과 같은 단계를 거친다.
+Dinamic Programming은 다항한 시간안에 특정 문제를 풀기위한 기술이다. DP는 다음과 같은 단계를 수행한다.
 1. DP가 사용 가능한 문제인지 확인
 2. 최소 매개변수를 이용해 어떻게 상태를 표현할지 결정
 3. 상태 관계를 수식화
