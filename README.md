@@ -78,14 +78,11 @@
 │   ├── Euler Tour Technique
 │   └── 2-SAT
 ├── 동적 프로그래밍
-│   ├── 기본 DP / 점화식
-│   ├── 최장 증가 부분 수열
-│   ├── 공통 부분 문자열
+│   ├── 기본 DP (점화식)
+│   ├── 순서 DP (LIS, LCS)
 │   ├── 상태 압축 DP (Bitmask DP)
-│   ├── 트리 DP / 야호–코라스
-│   ├── Divide & Conquer Optimization
-│   ├── Knuth Optimization
-│   └── Convex Hull Trick (DP)
+│   ├── 트리 DP (야호–코라스)
+│   └── 고급 최적화 (분할정복 DP, Knuth, CHT)
 ├── 쿼리 최적화
 │   ├── Mo’s 알고리즘
 │   ├── 오프라인 쿼리
@@ -112,7 +109,7 @@
 유니온 파인드
 최소 신장 트리
 기하 2
-동적 계획법 3
+동적 계획법 3해당
 ---
 스택 2
 트리에서의 동적 계획법
